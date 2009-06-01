@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8f5add3f-ad9e-4e3a-8342-a736131fad09" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8000/Service" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="553ef092-1eb2-4597-9b67-0657285e5576" SourceId="1" SourceUrl="http://localhost:8000/Service?wsdl=wsdl0" />
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="652d346a-0f64-47a1-b6de-37a9f5a312e9" SourceId="1" SourceUrl="http://localhost:8000/Service?xsd=xsd0" />
+    <MetadataFile FileName="WiiTransfer.wsdl" MetadataType="Wsdl" ID="b6f8a5d4-d5fb-4b7f-8a32-404fdb06f461" SourceId="1" SourceUrl="http://localhost:8000/Service?wsdl" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="ad6c17bc-191c-4f32-b915-e0cc6e349739" SourceId="1" SourceUrl="http://localhost:8000/Service?xsd=xsd1" />
+    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="24122525-e2bc-486e-89bc-3489bd1e3c79" SourceId="1" SourceUrl="http://localhost:8000/Service?disco" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="e25581f8-4c4a-4fbd-be87-c28fa3dbb42f" SourceId="1" SourceUrl="http://localhost:8000/Service?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

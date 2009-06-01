@@ -16,6 +16,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.IO;
 using System.Diagnostics;
+using System.ServiceModel;
 namespace WiimoteTest
 {
     /// <summary>
@@ -25,12 +26,15 @@ namespace WiimoteTest
     {
         WiimoteState wms;
 
+        WiiService.WiiTransferClient client = null;
+
         WiimoteCollection mWC;
         Dictionary<Guid, int> mWiimoteMap = new Dictionary<Guid, int>();
         private delegate void UpdateWiimoteStateDelegate(object sender, WiimoteChangedEventArgs args);
         List<Point3> wiimoteDiff = new List<Point3>();
         List<Point3> wiimote1 = new List<Point3>();
         List<Point3> wiimote2 = new List<Point3>();
+        public static List<Point3> wiimote3 = new List<Point3>();
         List<string> log = new List<string>();
         int valori;
 
@@ -59,6 +63,8 @@ namespace WiimoteTest
             UpdateLabels();
             f.Show();
             int wiimote1OldCount = 0;
+
+            
             
             new DispatcherTimer() { Interval=TimeSpan.FromSeconds(2), IsEnabled=true }
                 .Tick += (s, e) =>
@@ -114,7 +120,7 @@ namespace WiimoteTest
                     label8.Content = wiimote1.Count;
                     //DrawGraph(wiimoteDiff, canvas3, Brushes.OrangeRed,1);
                     DrawGraph(wiimote1, canvas1, Brushes.Red, 1);
-                    DrawGraph(wiimote2, canvas1, Brushes.RoyalBlue, 0.5);
+                    DrawGraph(wiimote3, canvas1, Brushes.RoyalBlue, 0.5);
 
                     //if (wiimote1.Count > 1000)
                     //{
@@ -363,6 +369,7 @@ namespace WiimoteTest
                     break;
                 case 2: label3.Content = state.AccelState.RawValues.X.ToString("N2");
                     lastwiimote2 = state.AccelState.RawValues;
+                    if (client != null) client.SendWiimoteData(lastwiimote2);
                     lastwiimote2.X = (byte)(lastwiimote2.X * scaleAdjustment + adjustment);
                     if (f.sendData) f.SendByte((byte)state.AccelState.RawValues.X);
                     //wiimote2.Add(lastXwiimote2);
@@ -393,6 +400,16 @@ namespace WiimoteTest
             epsilonMax = Convert.ToInt32(e.NewValue);
             UpdateLabels();
 
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            ServiceCreator c = new ServiceCreator();
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            client = new WiimoteTest.WiiService.WiiTransferClient(new WSHttpBinding(), new EndpointAddress("http://localhost:8000/Service/WiiService"));
         }
 
 
