@@ -8,9 +8,9 @@ namespace WiimoteTest
 {
     class WiiTransfer:IWiiTransfer
     {
-        public void SendWiimoteData(Point3 wiidata)
+        public void SendWiimoteData(List<SignalSample> wiidata)
         {
-            Window1.wiimote3.Add(wiidata);
+            Window1.wiimote3.AddRange(wiidata);
         }
     }
 }

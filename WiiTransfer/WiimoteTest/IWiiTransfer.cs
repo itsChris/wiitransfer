@@ -12,7 +12,7 @@ namespace WiimoteTest
     public interface IWiiTransfer
     {
         [OperationContract]
-        void SendWiimoteData(Point3 wiidata);
+        void SendWiimoteData(List<SignalSample> wiidata);
 
     }
 }

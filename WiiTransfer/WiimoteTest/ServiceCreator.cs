@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Configuration;
 
 namespace WiimoteTest
 {
@@ -26,7 +27,9 @@ namespace WiimoteTest
             try
             {
              
-                selfHost.AddServiceEndpoint(typeof(IWiiTransfer), new WSHttpBinding(), "WiiService");
+                selfHost.AddServiceEndpoint(typeof(IWiiTransfer), 
+                                            new WSHttpBinding() { MaxReceivedMessageSize=2147483647, MaxBufferPoolSize=2147483647}, 
+                                            "WiiService");
 
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 smb.HttpGetEnabled = true;

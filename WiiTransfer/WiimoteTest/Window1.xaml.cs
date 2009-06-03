@@ -31,10 +31,10 @@ namespace WiimoteTest
         WiimoteCollection mWC;
         Dictionary<Guid, int> mWiimoteMap = new Dictionary<Guid, int>();
         private delegate void UpdateWiimoteStateDelegate(object sender, WiimoteChangedEventArgs args);
-        List<Point3> wiimoteDiff = new List<Point3>();
-        List<Point3> wiimote1 = new List<Point3>();
-        List<Point3> wiimote2 = new List<Point3>();
-        public static List<Point3> wiimote3 = new List<Point3>();
+     
+        List<SignalSample> wiimote1 = new List<SignalSample>();
+        List<SignalSample> wiimote2 = new List<SignalSample>();
+        public static List<SignalSample> wiimote3 = new List<SignalSample>();
         List<string> log = new List<string>();
         int valori;
 
@@ -44,8 +44,9 @@ namespace WiimoteTest
         double max = 0;
         int limit = 0;
 
-        Point3 lastwiimote1, lastwiimote2;
+        SignalSample lastwiimote1, lastwiimote2;
         Form1 f = new Form1();
+        DateTime DrawStart = DateTime.Now;
 
         bool redundancyMode = true;
         bool compareMode = true;
@@ -61,14 +62,15 @@ namespace WiimoteTest
 
             canvas1.RenderTransformOrigin = new System.Windows.Point(canvas1.RenderSize.Width / 2, canvas1.RenderSize.Height / 2);
             UpdateLabels();
-            f.Show();
+            //f.Show();
             int wiimote1OldCount = 0;
 
             
             
-            new DispatcherTimer() { Interval=TimeSpan.FromSeconds(2), IsEnabled=true }
+            new DispatcherTimer() { Interval=TimeSpan.FromSeconds(0.2), IsEnabled=true }
                 .Tick += (s, e) =>
                 {
+                    
                     double proc = 0;
                     limit = wiimote1.Count - wiimote1OldCount;
                     wiimote1OldCount = wiimote1.Count;
@@ -76,10 +78,17 @@ namespace WiimoteTest
                         proc = GetSeriesMatchPercentage(wiimote1, wiimote2, epsilonMax, limit);
                     //if(proc==0) Debugger.Break();
                     //mark the moment
-                    scroll.ScrollToHorizontalOffset(wiimote1.Count - scroll.ActualWidth / 2);
-                    canvas1.Children.Add(new Line { X1=wiimote1.Count, X2 = wiimote1.Count, Y1 = 0, Y2 = 100, Stroke=new SolidColorBrush(Colors.Firebrick), StrokeThickness=1 });
-                    TextBlock tb = new TextBlock { Text = proc.ToString("N0") + "%" }; Canvas.SetTop(tb, 0); Canvas.SetLeft(tb, wiimote1.Count - 40);
-                    canvas1.Children.Add(tb);
+                    //scroll.ScrollToHorizontalOffset((wiimote1.Last().sampleTimeStamp - DrawStart).TotalMilliseconds / 10 - scroll.ActualWidth / 2);
+                    //canvas1.Children.Add(new Line { X1 = (wiimote1.Last().sampleTimeStamp - DrawStart).TotalMilliseconds / 10,
+                    //                                X2 = (wiimote1.Last().sampleTimeStamp - DrawStart).TotalMilliseconds / 10, 
+                    //                                Y1 = 0, 
+                    //                                Y2 = 100,
+                    //                                Stroke = new SolidColorBrush(Colors.Firebrick), 
+                    //                                StrokeThickness = 1 });
+                    //TextBlock tb = new TextBlock { Text = proc.ToString("N0") + "%" }; 
+                    //                               Canvas.SetTop(tb, 0);
+                    //                               Canvas.SetLeft(tb, (wiimote1.Last().sampleTimeStamp - DrawStart).TotalMilliseconds / 10 - 40);
+                    //canvas1.Children.Add(tb);
 
                     lblMedDif.Content = proc.ToString("N0") + "%";
                     
@@ -100,8 +109,8 @@ namespace WiimoteTest
 
         void UpdateGraphs(object sender, EventArgs e)
         {
-            wiimote2.Add(lastwiimote2);
-            wiimote1.Add(lastwiimote1);
+            //wiimote2.Add(lastwiimote2);
+            //wiimote1.Add(lastwiimote1);
 
 
             if (running)
@@ -117,37 +126,43 @@ namespace WiimoteTest
                 {
                     //wiimoteDiff.Add(Convert.ToByte(Math.Abs((lastXwiimote2 - lastXwiimote1))));
 
-                    label8.Content = wiimote1.Count;
+                    //label8.Content = "w1: " + wiimote1.Count + " w2: " + wiimote2.Count;
                     //DrawGraph(wiimoteDiff, canvas3, Brushes.OrangeRed,1);
-                    DrawGraph(wiimote1, canvas1, Brushes.Red, 1);
-                    DrawGraph(wiimote3, canvas1, Brushes.RoyalBlue, 0.5);
-
-                    //if (wiimote1.Count > 1000)
-                    //{
-                    //    OnClear(null, null);
-                       
-                    //}
+                    //DrawGraph(wiimote2, canvas1, Brushes.Red, 1);
+                    DrawGraph(wiimote3, canvas1, Brushes.RoyalBlue, 1);
 
                 }
             }
-
-
+            
         }
 
-        private double GetSeriesMatchPercentage(List<Point3> series1, List<Point3> series2, int epsilonMax, int length)
+        private double GetSeriesMatchPercentage(List<SignalSample> series1, List<SignalSample> series2, int epsilonMax, int values)
         {
-            int matchCount = 0;
-            for (int i = 0; i < length; i++)
+            int matches = 0;
+            
+         
+            if (series1.Count > 99 && series2.Count > 99)
             {
-                int dif = series1[series1.Count - 1 - i].X - series2[series2.Count - 1 - i].X;
-                if (Math.Abs(dif * dif) < epsilonMax * epsilonMax)
-                    matchCount++;
-                else
+               
+                series1.Reverse();
+                series1 = series1.Take(values).ToList();
+
+                series2.Reverse();
+                series2 = series2.Take(values).ToList();
+                
+                List<WiiService.SignalSample> sendseries = new List<WiiService.SignalSample>();
+                foreach (SignalSample s in series2) sendseries.Add(new WiimoteTest.WiiService.SignalSample() { sample = s.sample, sampleTimeStamp = s.sampleTimeStamp });
+                if (client != null)
+                    client.SendWiimoteDataAsync(sendseries);
+
+                
+                for (int i = 0; i < series1.Count; i++)
                 {
+                    if (Math.Abs(series1[i].sample.X - series2[i].sample.X) < epsilonMax) matches++;
                 }
             }
 
-            return (Convert.ToDouble(matchCount) / Convert.ToDouble(length)) * 100;
+            return 100 * (double)matches / series1.Count ;
         }
 
         int adjustment;
@@ -157,21 +172,28 @@ namespace WiimoteTest
 
 
 
-        void DrawGraph(List<Point3> record, Canvas canvas, Brush brush, double thickness)
+        void DrawGraph(List<SignalSample> record, Canvas canvas, Brush brush, double thickness)
         {
             if (record.Count > 2)
             {
-                //canvas.Children.Clear();
-                Line ln = new Line();
-                ln.X1 = record.Count - sliderTimeZoom.Value;
-                ln.Y1 = record[record.Count - 2].X * signalzoom.Value;
+                canvas.Children.Clear();
 
-                ln.X2 = record.Count;
-                ln.Y2 = record[record.Count - 1].X * signalzoom.Value;
 
-                ln.Stroke = brush;
-                ln.StrokeThickness = thickness;
-                canvas.Children.Add(ln);
+
+                for (int i = 0; i < record.Count; i++)
+                {
+                    SignalSample sig = record[i];
+                    Line ln = new Line();
+                    ln.X1 = (record.IndexOf(sig));
+                    ln.Y1 = sig.sample.X * signalzoom.Value;
+
+                    ln.X2 = (record.IndexOf(sig)) + 1;
+                    ln.Y2 = sig.sample.X * signalzoom.Value;
+
+                    ln.Stroke = brush;
+                    ln.StrokeThickness = thickness;
+                    canvas.Children.Add(ln);
+                }
                 
             }
         }
@@ -269,7 +291,7 @@ namespace WiimoteTest
             {
                 wiimote1.Clear();
                 wiimote2.Clear();
-                wiimoteDiff.Clear();
+              
                 canvas1.Children.Clear();
                 canvas2.Children.Clear();
                 canvas3.Children.Clear();
@@ -350,9 +372,10 @@ namespace WiimoteTest
             switch (currentWiiMote)
             {
                 case 1: label2.Content = state.AccelState.RawValues.X.ToString("N2");
-
-                    lastwiimote1 = state.AccelState.RawValues;
-                    //wiimote1.Add(lastXwiimote1);
+                    lastwiimote1 = new SignalSample();
+                    lastwiimote1.sample = state.AccelState.RawValues;
+                    lastwiimote1.sampleTimeStamp = DateTime.Now;
+                    wiimote1.Add(lastwiimote1);
                     //log.Add(lastXwiimote1.ToString()+" ");
 
                     if (running && redundancyMode)
@@ -368,16 +391,24 @@ namespace WiimoteTest
                     }
                     break;
                 case 2: label3.Content = state.AccelState.RawValues.X.ToString("N2");
-                    lastwiimote2 = state.AccelState.RawValues;
-                    if (client != null) client.SendWiimoteData(lastwiimote2);
-                    lastwiimote2.X = (byte)(lastwiimote2.X * scaleAdjustment + adjustment);
-                    if (f.sendData) f.SendByte((byte)state.AccelState.RawValues.X);
+                    lastwiimote2 = new SignalSample();
+                    Point3 p = state.AccelState.RawValues;
+                    p.X = (byte)(p.X * scaleAdjustment + adjustment);
+                    lastwiimote2.sample = p;
+                    lastwiimote2.sampleTimeStamp = DateTime.Now;
+                    wiimote2.Add(lastwiimote2);
+                    WiiService.SignalSample sample = new WiimoteTest.WiiService.SignalSample() { sample = lastwiimote1.sample, sampleTimeStamp = lastwiimote1.sampleTimeStamp };
+                    
+                    //lastwiimote2.sample.X = (byte)(lastwiimote2.sample.X * scaleAdjustment + adjustment);
+                    //if (f.sendData) f.SendByte((byte)state.AccelState.RawValues.X);
                     //wiimote2.Add(lastXwiimote2);
                     break;
 
             }
 
-            label1.Content = Math.Abs((lastwiimote2.X - lastwiimote1.X)).ToString("N2");
+           
+
+            //label1.Content = Math.Abs((lastwiimote2.sample.X - lastwiimote1.sample.X)).ToString("N2");
 
         }
 
@@ -409,7 +440,7 @@ namespace WiimoteTest
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
-            client = new WiimoteTest.WiiService.WiiTransferClient(new WSHttpBinding(), new EndpointAddress("http://localhost:8000/Service/WiiService"));
+            client = new WiimoteTest.WiiService.WiiTransferClient();
         }
 
 

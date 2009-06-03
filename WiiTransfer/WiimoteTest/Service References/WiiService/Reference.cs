@@ -9,17 +9,80 @@
 //------------------------------------------------------------------------------
 
 namespace WiimoteTest.WiiService {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SignalSample", Namespace="http://schemas.datacontract.org/2004/07/WiimoteTest")]
+    [System.SerializableAttribute()]
+    public partial class SignalSample : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private WiimoteLib.Point3 sampleField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime sampleTimeStampField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public WiimoteLib.Point3 sample {
+            get {
+                return this.sampleField;
+            }
+            set {
+                if ((this.sampleField.Equals(value) != true)) {
+                    this.sampleField = value;
+                    this.RaisePropertyChanged("sample");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime sampleTimeStamp {
+            get {
+                return this.sampleTimeStampField;
+            }
+            set {
+                if ((this.sampleTimeStampField.Equals(value) != true)) {
+                    this.sampleTimeStampField = value;
+                    this.RaisePropertyChanged("sampleTimeStamp");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://Microsoft.ServiceModel.Samples", ConfigurationName="WiiService.IWiiTransfer")]
     public interface IWiiTransfer {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://Microsoft.ServiceModel.Samples/IWiiTransfer/SendWiimoteData", ReplyAction="http://Microsoft.ServiceModel.Samples/IWiiTransfer/SendWiimoteDataResponse")]
-        void SendWiimoteData(WiimoteLib.Point3 wiidata);
+        void SendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://Microsoft.ServiceModel.Samples/IWiiTransfer/SendWiimoteData", ReplyAction="http://Microsoft.ServiceModel.Samples/IWiiTransfer/SendWiimoteDataResponse")]
-        System.IAsyncResult BeginSendWiimoteData(WiimoteLib.Point3 wiidata, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginSendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata, System.AsyncCallback callback, object asyncState);
         
         void EndSendWiimoteData(System.IAsyncResult result);
     }
@@ -59,12 +122,12 @@ namespace WiimoteTest.WiiService {
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> SendWiimoteDataCompleted;
         
-        public void SendWiimoteData(WiimoteLib.Point3 wiidata) {
+        public void SendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata) {
             base.Channel.SendWiimoteData(wiidata);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public System.IAsyncResult BeginSendWiimoteData(WiimoteLib.Point3 wiidata, System.AsyncCallback callback, object asyncState) {
+        public System.IAsyncResult BeginSendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata, System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginSendWiimoteData(wiidata, callback, asyncState);
         }
         
@@ -74,7 +137,7 @@ namespace WiimoteTest.WiiService {
         }
         
         private System.IAsyncResult OnBeginSendWiimoteData(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            WiimoteLib.Point3 wiidata = ((WiimoteLib.Point3)(inValues[0]));
+            System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata = ((System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample>)(inValues[0]));
             return this.BeginSendWiimoteData(wiidata, callback, asyncState);
         }
         
@@ -90,11 +153,11 @@ namespace WiimoteTest.WiiService {
             }
         }
         
-        public void SendWiimoteDataAsync(WiimoteLib.Point3 wiidata) {
+        public void SendWiimoteDataAsync(System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata) {
             this.SendWiimoteDataAsync(wiidata, null);
         }
         
-        public void SendWiimoteDataAsync(WiimoteLib.Point3 wiidata, object userState) {
+        public void SendWiimoteDataAsync(System.Collections.Generic.List<WiimoteTest.WiiService.SignalSample> wiidata, object userState) {
             if ((this.onBeginSendWiimoteDataDelegate == null)) {
                 this.onBeginSendWiimoteDataDelegate = new BeginOperationDelegate(this.OnBeginSendWiimoteData);
             }

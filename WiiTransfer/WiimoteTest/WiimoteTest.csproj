@@ -107,6 +107,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="ServiceCreator.cs" />
+    <Compile Include="SignalSample.cs" />
     <Compile Include="WiiTransfer.cs" />
     <Compile Include="WMIHelper.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -162,6 +163,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\WiiService\Service3.xsd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
