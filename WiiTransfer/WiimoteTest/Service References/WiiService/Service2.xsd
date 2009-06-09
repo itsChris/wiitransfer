@@ -9,8 +9,9 @@
   <xs:element name="ArrayOfSignalSample" nillable="true" type="tns:ArrayOfSignalSample" />
   <xs:complexType name="SignalSample">
     <xs:sequence>
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WiimoteLib" minOccurs="0" name="sample" type="q1:Point3" />
-      <xs:element minOccurs="0" name="sampleTimeStamp" type="xs:dateTime" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WiimoteLib" minOccurs="0" name="Sample" type="q1:Point3" />
+      <xs:element minOccurs="0" name="Source" type="xs:int" />
+      <xs:element minOccurs="0" name="TimeStamp" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SignalSample" nillable="true" type="tns:SignalSample" />

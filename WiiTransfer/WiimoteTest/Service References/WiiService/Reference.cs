@@ -23,10 +23,13 @@ namespace WiimoteTest.WiiService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private WiimoteLib.Point3 sampleField;
+        private WiimoteLib.Point3 SampleField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime sampleTimeStampField;
+        private int SourceField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime TimeStampField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -39,27 +42,40 @@ namespace WiimoteTest.WiiService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public WiimoteLib.Point3 sample {
+        public WiimoteLib.Point3 Sample {
             get {
-                return this.sampleField;
+                return this.SampleField;
             }
             set {
-                if ((this.sampleField.Equals(value) != true)) {
-                    this.sampleField = value;
-                    this.RaisePropertyChanged("sample");
+                if ((this.SampleField.Equals(value) != true)) {
+                    this.SampleField = value;
+                    this.RaisePropertyChanged("Sample");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime sampleTimeStamp {
+        public int Source {
             get {
-                return this.sampleTimeStampField;
+                return this.SourceField;
             }
             set {
-                if ((this.sampleTimeStampField.Equals(value) != true)) {
-                    this.sampleTimeStampField = value;
-                    this.RaisePropertyChanged("sampleTimeStamp");
+                if ((this.SourceField.Equals(value) != true)) {
+                    this.SourceField = value;
+                    this.RaisePropertyChanged("Source");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime TimeStamp {
+            get {
+                return this.TimeStampField;
+            }
+            set {
+                if ((this.TimeStampField.Equals(value) != true)) {
+                    this.TimeStampField = value;
+                    this.RaisePropertyChanged("TimeStamp");
                 }
             }
         }

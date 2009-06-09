@@ -12,5 +12,11 @@ namespace WiimoteTest
     /// </summary>
     public partial class App : Application
     {
+        public static Window1 window = null;
+        public App()
+        {
+            window = new Window1();
+            window.Show();
+        }
     }
 }

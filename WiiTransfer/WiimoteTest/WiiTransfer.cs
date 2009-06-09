@@ -10,7 +10,7 @@ namespace WiimoteTest
     {
         public void SendWiimoteData(List<SignalSample> wiidata)
         {
-           // Window1.wiimote3.AddRange(wiidata);
+            App.window.ReceiveSampleList(wiidata);
         }
     }
 }

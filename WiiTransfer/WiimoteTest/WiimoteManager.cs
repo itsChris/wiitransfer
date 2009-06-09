@@ -35,7 +35,7 @@ namespace WiimoteTest
                 wm.Disconnect();
         }
 
-        public void ConnectWiimotes()
+        public Dictionary<Guid, int> ConnectWiimotes()
         {
             mWC = new WiimoteCollection();
             int index = 1;
@@ -76,6 +76,7 @@ namespace WiimoteTest
                 }
 
             }
+            return mWiimoteMap;
         }
 
         void OnWiiMoteAddExtension(object sender, WiimoteExtensionChangedEventArgs e)

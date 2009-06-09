@@ -24,90 +24,146 @@ namespace WiimoteTest
     /// </summary>
     public partial class Window1 : Window
     {
-
+        public static Window currentWindow;
         WiiService.WiiTransferClient client = null;
         EnvironmentVariables variables = new EnvironmentVariables();
         WiimoteManager wiimoteManager = new WiimoteManager();
         private delegate void UpdateWiimoteStateDelegate(object sender, WiimoteUpdatedEventArgs args);
-
-
-        List<SignalSample> wiimote1 = new List<SignalSample>();
-        List<SignalSample> wiimote2 = new List<SignalSample>();
-        public static List<SignalSample> wiimote3 = new List<SignalSample>();
-
-        List<string> log = new List<string>();
-
-        double max = 0;
-        int limit = 0;
+        private delegate void UpdateGraphWithNewDataDelegate(List<SignalSample> sample);
 
         SignalSample oldSample1 = new SignalSample();
         SignalSample oldSample2 = new SignalSample();
-        DateTime DrawStart = DateTime.Now;
+        List<SignalSample> sampleList1 = new List<SignalSample>();
+        List<SignalSample> receivedSampleList = new List<SignalSample>();
 
-        bool redundancyMode = true;
-        bool compareMode = true;
+        DateTime DrawStart = DateTime.Now;
+        DateTime DateLastSignalSent = DateTime.Now;
+
+        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1000) };
 
         public Window1()
         {
+            currentWindow = this;
             InitializeComponent();
             LayoutRoot.DataContext = variables;
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
-            canvas1.RenderTransformOrigin = new System.Windows.Point(canvas1.RenderSize.Width / 2, canvas1.RenderSize.Height / 2);
+            sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
 
 
-            new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = false }
-                .Tick += (s, e) =>
-                {
+            //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
 
-                    //double proc = 0;
-                    //limit = wiimote1.Count - wiimote1OldCount;
-                    //wiimote1OldCount = wiimote1.Count;
-                    //if (wiimote1.Count > limit && wiimote2.Count > limit)
-                    //    proc = GetSeriesMatchPercentage(wiimote1, wiimote2, variables.EpsilonMaxim, limit);
-                    //if(proc==0) Debugger.Break();
-                    //mark the moment
-                    //scroll.ScrollToHorizontalOffset((wiimote1.Last().TimeStamp - DrawStart).TotalMilliseconds / 10 - scroll.ActualWidth / 2);
-                    //canvas1.Children.Add(new Line
-                    //{
-                    //    X1 = (wiimote1.Last().TimeStamp - DrawStart).TotalMilliseconds / 10,
-                    //    X2 = (wiimote1.Last().TimeStamp - DrawStart).TotalMilliseconds / 10,
-                    //    Y1 = 0,
-                    //    Y2 = 100,
-                    //    Stroke = new SolidColorBrush(Colors.Firebrick),
-                    //    StrokeThickness = 1
-                    //});
-                    //TextBlock tb = new TextBlock { Text = proc.ToString("N0") + "%" }; 
-                    //                               Canvas.SetTop(tb, 0);
-                    //                               Canvas.SetLeft(tb, (wiimote1.Last().sampleTimeStamp - DrawStart).TotalMilliseconds / 10 - 40);
-                    //canvas1.Children.Add(tb);
+        }
 
-                    //lblMedDif.Content = proc.ToString("N0") + "%";
+        void OnMatchingTimer(object sender, EventArgs e)
+        {
+            AddMarker(oldSample1, canvas1, "Raul");
+        }
 
-                };
+        void DisplayMatchPercentage(List<SignalSample> list1, List<SignalSample> list2)
+        {
 
+            double percentage = GetSeriesMatchPercentage(list1, list2, variables.EpsilonMaxim, 100);
+            AddMarker(oldSample1, canvas1, percentage.ToString("N0") + "%");
         }
 
         void OnWiimoteUpdated(object sender, WiimoteUpdatedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new UpdateWiimoteStateDelegate(WiimoteUpdated), sender, e);
-           
         }
 
         void WiimoteUpdated(object sender, WiimoteUpdatedEventArgs e)
         {
-             switch (e.SignalSample.Source)
+            if (e.SignalSample.Source == currentWiimote)
             {
-                case 1: DrawGraph(e.SignalSample, oldSample1, canvas1, Brushes.Blue, 1);
-                    oldSample1 = e.SignalSample;
-                    break;
+                DrawGraph(e.SignalSample, oldSample1, canvas1, Brushes.Blue, 1);
+                oldSample1 = e.SignalSample;
+                sampleList1.Add(e.SignalSample);
+                if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
+                {
+                    sendTimer.IsEnabled = true;
+                }
+            }
 
-                case 2: DrawGraph(e.SignalSample, oldSample2, canvas1, Brushes.Orange, 1);
-                    oldSample2 = e.SignalSample;
-                    break;
+            
+
+
+
+            if (sampleList1.Count > 99 && receivedSampleList.Count > 99)
+            {
+                //DisplayMatchPercentage(sampleList1, receivedSampleList);
+                //sampleList1.Clear();
+                //receivedSampleList.Clear();
             }
         }
 
+        public void ReceiveSampleList(List<SignalSample> sample)
+        {
+            receivedSampleList.AddRange(sample);
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new UpdateGraphWithNewDataDelegate(UpdateGraphWithNewData), sample);
+        }
 
+        public void UpdateGraphWithNewData(List<SignalSample> sample)
+        {
+            double perc = GetSeriesMatchPercentage(sampleList1, sample, 5, 100);
+            DrawSampleListGraph(sample, canvas1, Brushes.Red, 5);
+            AddMarker(sample[0], canvas1, perc.ToString("N2"));
+
+
+
+        }
+
+        SignalSample AdjustSample(SignalSample sample)
+        {
+            SignalSample adjustedSample = sample;
+            adjustedSample.Sample = new Point3()
+            {
+                X = Convert.ToInt32(adjustedSample.Sample.X * variables.ScaleAdjustment + variables.SignalAdjustment),
+                Y = adjustedSample.Sample.Y,
+                Z = adjustedSample.Sample.Z
+            };
+            return adjustedSample;
+
+        }
+
+
+        void AddMarker(SignalSample record, Canvas canvas, string label)
+        {
+            Line ln = new Line();
+            TextBlock text = new TextBlock();
+            ln.X1 = ln.X2 = (record.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom;
+            Canvas.SetLeft(text, ln.X1 - 40); Canvas.SetTop(text, 20);
+            ln.Y1 = 0; ln.Y2 = 100;
+            ln.Stroke = Brushes.Firebrick;
+            ln.StrokeThickness = 1;
+            text.Text = label;
+            canvas.Children.Add(ln);
+            canvas.Children.Add(text);
+        }
+
+        void DrawGraph(SignalSample newRecord, SignalSample oldRecord, Canvas canvas, Brush brush, double thickness)
+        {
+            Line ln = new Line();
+            ln.X1 = (newRecord.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom;
+            ln.Y1 = newRecord.Sample.X * variables.SignalZoom;
+
+            ln.X2 = (oldRecord.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom;
+            ln.Y2 = oldRecord.Sample.X * variables.SignalZoom;
+
+            ln.Stroke = brush;
+            ln.StrokeThickness = thickness;
+
+            canvas.Children.Add(ln);
+        }
+
+        void DrawSampleListGraph(List<SignalSample> records, Canvas canvas, Brush brush, double thickness)
+        {
+            int i = 1;
+            while (i < records.Count)
+            {
+                DrawGraph(records[i], records[i - 1], canvas, brush, thickness);
+                i++;
+            }
+        }
 
         private double GetSeriesMatchPercentage(List<SignalSample> series1, List<SignalSample> series2, int epsilonMax, int values)
         {
@@ -117,48 +173,27 @@ namespace WiimoteTest
             if (series1.Count > 99 && series2.Count > 99)
             {
 
+
                 series1.Reverse();
                 series1 = series1.Take(values).ToList();
 
                 series2.Reverse();
                 series2 = series2.Take(values).ToList();
 
-                if (client != null)
-                {
-                    List<WiiService.SignalSample> sendseries = new List<WiiService.SignalSample>();
-                    foreach (SignalSample s in series2) sendseries.Add(new WiimoteTest.WiiService.SignalSample() { sample = s.Sample, sampleTimeStamp = s.TimeStamp });
-                    client.SendWiimoteDataAsync(sendseries);
-                }
-
-
                 for (int i = 0; i < series1.Count; i++)
                 {
-                    if (Math.Abs(series1[i].Sample.X - series2[i].Sample.X) < epsilonMax) matches++;
+                    if (Math.Abs(series1[i].Sample.X - series2[i].Sample.X) <= epsilonMax) matches++;
                 }
             }
 
             return 100 * (double)matches / series1.Count;
         }
 
-        void DrawGraph(SignalSample newRecord, SignalSample oldRecord, Canvas canvas, Brush brush, double thickness)
-        {
 
-            Line ln = new Line();
-            ln.X1 = (newRecord.TimeStamp - DrawStart).TotalSeconds*50;
-            ln.Y1 = newRecord.Sample.X;
-
-            ln.X2 = (oldRecord.TimeStamp - DrawStart).TotalSeconds*50;
-            ln.Y2 = oldRecord.Sample.X;
-
-            ln.Stroke = brush;
-            ln.StrokeThickness = thickness;
-            canvas.Children.Add(ln);
-
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            wiimoteManager.ConnectWiimotes();
+            OnConnectWiimotes(sender, e);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -175,7 +210,16 @@ namespace WiimoteTest
 
         private void OnConnectWiimotes(object sender, RoutedEventArgs e)
         {
-            wiimoteManager.ConnectWiimotes();
+            Dictionary<Guid, int> wiimotes = wiimoteManager.ConnectWiimotes();
+            foreach (var wiimote in wiimotes)
+                WiimoteList.Items.Add(new ListBoxItem() { Content = "Wiimote " + wiimote.Value, Tag = wiimote.Value });
+        }
+
+
+        int currentWiimote = 1;
+        private void WiimoteList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentWiimote = Convert.ToInt32((WiimoteList.SelectedItem as ListBoxItem).Tag);
         }
 
         private void button4_Click(object sender, RoutedEventArgs e)
@@ -183,12 +227,34 @@ namespace WiimoteTest
             ServiceCreator c = new ServiceCreator();
         }
 
-        private void button5_Click(object sender, RoutedEventArgs e)
+
+        private void SendSampleList(List<SignalSample> sampleList)
         {
-            client = new WiimoteTest.WiiService.WiiTransferClient();
+            if (client == null) client = new WiimoteTest.WiiService.WiiTransferClient();
+            if (client != null)
+            {
+                List<WiiService.SignalSample> sendseries = new List<WiiService.SignalSample>();
+                foreach (SignalSample s in sampleList)
+                    if (s.TimeStamp > DateTime.Now-sendTimer.Interval)
+                        sendseries.Add(new WiimoteTest.WiiService.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp, Source = s.Source });
+                client.SendWiimoteData(sendseries);
+                DateLastSignalSent = DateTime.Now;
+
+            }
         }
 
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            SendSampleList(sampleList1);
+        }
 
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            canvas1.Children.Clear();
+            DrawStart = DateTime.Now;
+            sampleList1.Clear();
+            receivedSampleList.Clear();
+        }
 
     }
 }

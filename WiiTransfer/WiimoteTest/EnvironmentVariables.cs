@@ -15,6 +15,8 @@ namespace WiimoteTest
             EpsilonMaxim = 5;
             ScaleAdjustment = 1;
             Running = true;
+            TimeZoom = 50;
+            SignalZoom = 1;
         }
 
         int _signalAdjustment;
@@ -67,6 +69,34 @@ namespace WiimoteTest
             {
                 _running = value;
                 RaisePropertyChanged("Running");
+            }
+        }
+
+        double _timeZoom;
+        public double TimeZoom
+        {
+            get
+            {
+                return _timeZoom;
+            }
+            set
+            {
+                _timeZoom = value;
+                RaisePropertyChanged("TimeZoom");
+            }
+        }
+
+        double _signalZoom;
+        public double SignalZoom
+        {
+            get
+            {
+                return _signalZoom;
+            }
+            set
+            {
+                _signalZoom = value;
+                RaisePropertyChanged("SignalZoom");
             }
         }
 
