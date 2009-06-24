@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Net.NetworkInformation;
 using System.Threading;
-using System.Text;
+using System.Text;using NativeWifi;
 
 namespace NativeWifi
 {
