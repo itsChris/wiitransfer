@@ -49,7 +49,7 @@ namespace WiimoteTest
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
             sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
 
-
+            //Form1 f = new Form1(); f.Show();
             //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
 
         }
