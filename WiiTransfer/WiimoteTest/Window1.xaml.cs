@@ -105,11 +105,8 @@ namespace WiimoteTest
         public void UpdateGraphWithNewData(List<SignalSample> sample)
         {
             double perc = GetSeriesMatchPercentage(sampleList1, sample, 5, 100);
-            DrawSampleListGraph(sample, canvas1, Brushes.Red, 5);
-            AddMarker(sample[0], canvas1, perc.ToString("N2"));
-
-
-
+            DrawSampleListGraph(sample, canvas1, Brushes.Red, 1);
+            //AddMarker(sample[0], canvas1, perc.ToString("N2"));
         }
 
         SignalSample AdjustSample(SignalSample sample)
