@@ -130,10 +130,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Service References\WiiServiceReference\service.wsdl" />
-    <None Include="Service References\WiiServiceReference\service.xsd" />
-    <None Include="Service References\WiiServiceReference\service1.xsd" />
-    <None Include="Service References\WiiServiceReference\WiimoteLib.xsd" />
-    <None Include="Service References\WiiServiceReference\WiimoteTest.xsd" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +195,10 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\WiiServiceReference\service2.xsd" />
+    <None Include="Service References\WiiServiceReference\service21.xsd" />
+    <None Include="Service References\WiiServiceReference\WiimoteLib1.xsd" />
+    <None Include="Service References\WiiServiceReference\WiimoteTest1.xsd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

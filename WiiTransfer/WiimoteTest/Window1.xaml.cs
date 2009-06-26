@@ -39,7 +39,7 @@ namespace WiimoteTest
         DateTime DrawStart = DateTime.Now;
         DateTime DateLastSignalSent = DateTime.Now;
 
-        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
+        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1500) };
 
         public Window1()
         {
@@ -75,6 +75,7 @@ namespace WiimoteTest
         {
             if (e.SignalSample.Source == currentWiimote)
             {
+
                 SignalSample adjustedSample = AdjustSample(e.SignalSample);
                 //DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
                 
@@ -231,14 +232,15 @@ namespace WiimoteTest
             {
                 List<WiiServiceReference.SignalSample> sendseries = new List<WiiServiceReference.SignalSample>();
                 foreach (SignalSample s in sampleList)
-                   // if (s.TimeStamp > DateTime.Now - sendTimer.Interval)
-                    if (s.TimeStamp > DateLastSignalSent)
+                    if (s.TimeStamp > DateTime.Now - sendTimer.Interval)
+                    //if (s.TimeStamp > DateLastSignalSent)
                     {
                         //WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
-                        sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp, Source = s.Source });
+                        sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp+dateDifference, Source = s.Source });
                     }
-                //client.SendWiimoteData(sendseries);
+                client.SendWiimoteData(sendseries);
                 DateLastSignalSent = DateTime.Now;
+                sampleList1.Clear();
                 client.Close();
                 client = null;
 
@@ -256,6 +258,17 @@ namespace WiimoteTest
             DrawStart = DateTime.Now;
             sampleList1.Clear();
             receivedSampleList.Clear();
+        }
+
+        TimeSpan dateDifference;
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+              if (client == null) client = new WiiServiceReference.WiiServiceClient();
+              if (client != null)
+              {
+                  DateTime serverTime = client.GetServerTime();
+                  dateDifference = (serverTime-DateTime.Now);
+              }
         }
 
     }
