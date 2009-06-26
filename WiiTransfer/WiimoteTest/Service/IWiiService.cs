@@ -12,5 +12,8 @@ namespace WiimoteTest.Service
     {
         [OperationContract]
         void SendWiimoteData(List<SignalSample> wiidata);
+
+        [OperationContract]
+        DateTime GetServerTime();
     }
 }

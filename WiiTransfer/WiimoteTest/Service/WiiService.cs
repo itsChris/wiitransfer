@@ -14,5 +14,10 @@ namespace WiimoteTest.Service
         {
             App.window.ReceiveSampleList(wiidata);
         }
+
+        public DateTime GetServerTime()
+        {
+            return DateTime.Now;
+        }
     }
 }

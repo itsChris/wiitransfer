@@ -75,19 +75,17 @@ namespace WiimoteTest
         {
             if (e.SignalSample.Source == currentWiimote)
             {
-                DrawGraph(e.SignalSample, oldSample1, canvas1, Brushes.Blue, 1);
-                oldSample1 = e.SignalSample;
-                sampleList1.Add(e.SignalSample);
-                //Math.Abs(e.SignalSample.Sample.X - 124) > 25&& 
-                if ( !sendTimer.IsEnabled)
+                SignalSample adjustedSample = AdjustSample(e.SignalSample);
+                //DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
+                
+                oldSample1 = adjustedSample;
+                sampleList1.Add(adjustedSample);
+                
+                if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
                 {
                     sendTimer.IsEnabled = true;
                 }
             }
-
-            
-
-
 
             if (sampleList1.Count > 99 && receivedSampleList.Count > 99)
             {
@@ -107,7 +105,7 @@ namespace WiimoteTest
         {
             double perc = GetSeriesMatchPercentage(sampleList1, sample, 5, 100);
             DrawSampleListGraph(sample, canvas1, Brushes.Red, 1);
-            //AddMarker(sample[0], canvas1, perc.ToString("N2"));
+            AddMarker(sample[0], canvas1, perc.ToString("N2"));
         }
 
         SignalSample AdjustSample(SignalSample sample)
