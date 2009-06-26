@@ -39,7 +39,7 @@ namespace WiimoteTest
         DateTime DrawStart = DateTime.Now;
         DateTime DateLastSignalSent = DateTime.Now;
 
-        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1000) };
+        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
 
         public Window1()
         {
@@ -78,7 +78,8 @@ namespace WiimoteTest
                 DrawGraph(e.SignalSample, oldSample1, canvas1, Brushes.Blue, 1);
                 oldSample1 = e.SignalSample;
                 sampleList1.Add(e.SignalSample);
-                if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
+                //Math.Abs(e.SignalSample.Sample.X - 124) > 25&& 
+                if ( !sendTimer.IsEnabled)
                 {
                     sendTimer.IsEnabled = true;
                 }
@@ -232,13 +233,16 @@ namespace WiimoteTest
             {
                 List<WiiServiceReference.SignalSample> sendseries = new List<WiiServiceReference.SignalSample>();
                 foreach (SignalSample s in sampleList)
-                    if (s.TimeStamp > DateTime.Now - sendTimer.Interval)
+                   // if (s.TimeStamp > DateTime.Now - sendTimer.Interval)
+                    if (s.TimeStamp > DateLastSignalSent)
                     {
-                        WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
-                        sendseries.Add(new WiiServiceReference.SignalSample() { Sample = p, TimeStamp = s.TimeStamp, Source = s.Source });
+                        //WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
+                        sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp, Source = s.Source });
                     }
                 //client.SendWiimoteData(sendseries);
                 DateLastSignalSent = DateTime.Now;
+                client.Close();
+                client = null;
 
             }
         }
