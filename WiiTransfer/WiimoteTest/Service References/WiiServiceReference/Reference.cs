@@ -96,6 +96,9 @@ namespace WiimoteTest.WiiServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/SendWiimoteData", ReplyAction="http://tempuri.org/IWiiService/SendWiimoteDataResponse")]
         void SendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/GetServerTime", ReplyAction="http://tempuri.org/IWiiService/GetServerTimeResponse")]
+        System.DateTime GetServerTime();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -127,6 +130,10 @@ namespace WiimoteTest.WiiServiceReference {
         
         public void SendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata) {
             base.Channel.SendWiimoteData(wiidata);
+        }
+        
+        public System.DateTime GetServerTime() {
+            return base.Channel.GetServerTime();
         }
     }
 }
