@@ -240,7 +240,7 @@ namespace WiimoteTest
                         WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
                         sendseries.Add(new WiiServiceReference.SignalSample() { Sample = p, TimeStamp = s.TimeStamp, Source = s.Source });
                     }
-                client.SendWiimoteData(sendseries);
+                //client.SendWiimoteData(sendseries);
                 DateLastSignalSent = DateTime.Now;
 
             }
