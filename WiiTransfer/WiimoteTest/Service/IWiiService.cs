@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
 using System.ServiceModel;
-using WiimoteLib;
+using System.Text;
 
-namespace WiimoteTest
+namespace WiimoteTest.Service
 {
-
-    [ServiceContract(Namespace = "http://Microsoft.ServiceModel.Samples")]
-    public interface IWiiTransfer
+    [ServiceContract]
+    public interface IWiiService
     {
         [OperationContract]
         void SendWiimoteData(List<SignalSample> wiidata);
-
     }
 }

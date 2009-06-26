@@ -25,7 +25,7 @@ namespace WiimoteTest
     public partial class Window1 : Window
     {
         public static Window currentWindow;
-        WiiService.WiiTransferClient client = null;
+        //WiiService.WiiTransferClient client = null;
         EnvironmentVariables variables = new EnvironmentVariables();
         WiimoteManager wiimoteManager = new WiimoteManager();
         private delegate void UpdateWiimoteStateDelegate(object sender, WiimoteUpdatedEventArgs args);
@@ -230,17 +230,17 @@ namespace WiimoteTest
 
         private void SendSampleList(List<SignalSample> sampleList)
         {
-            if (client == null) client = new WiimoteTest.WiiService.WiiTransferClient();
-            if (client != null)
-            {
-                List<WiiService.SignalSample> sendseries = new List<WiiService.SignalSample>();
-                foreach (SignalSample s in sampleList)
-                    if (s.TimeStamp > DateTime.Now-sendTimer.Interval)
-                        sendseries.Add(new WiimoteTest.WiiService.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp, Source = s.Source });
-                client.SendWiimoteData(sendseries);
-                DateLastSignalSent = DateTime.Now;
+            //if (client == null) client = new WiimoteTest.WiiService.WiiTransferClient();
+            //if (client != null)
+            //{
+            //    List<WiiService.SignalSample> sendseries = new List<WiiService.SignalSample>();
+            //    foreach (SignalSample s in sampleList)
+            //        if (s.TimeStamp > DateTime.Now-sendTimer.Interval)
+            //            sendseries.Add(new WiimoteTest.WiiService.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp, Source = s.Source });
+            //    //client.SendWiimoteData(sendseries);
+            //    DateLastSignalSent = DateTime.Now;
 
-            }
+            //}
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)

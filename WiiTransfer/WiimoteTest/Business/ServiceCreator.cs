@@ -6,12 +6,13 @@ using System.ComponentModel;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Configuration;
+using WiimoteTest.Service;
 
 namespace WiimoteTest
 {
     class ServiceCreator
     {
-        static Uri baseAddress = new Uri("http://localhost:8000/Service");
+        static Uri baseAddress = new Uri("http://192.168.1.105:8000/Service");
 
         public ServiceCreator()
         {
@@ -22,18 +23,19 @@ namespace WiimoteTest
 
         void bw_DoWork(object sender, DoWorkEventArgs e)
         {
-             ServiceHost selfHost = new ServiceHost(typeof(WiiTransfer), baseAddress);
+            ServiceHost selfHost = new ServiceHost(typeof(WiiService));
 
             try
             {
              
-                selfHost.AddServiceEndpoint(typeof(IWiiTransfer), 
-                                            new WSHttpBinding() { MaxReceivedMessageSize=2147483647, MaxBufferPoolSize=2147483647}, 
-                                            "WiiService");
+                //selfHost.AddServiceEndpoint(typeof(IWiiTransfer), 
+                //                            new WSHttpBinding() { MaxReceivedMessageSize=2147483647, MaxBufferPoolSize=2147483647}, 
+                //                           "WiiService");
 
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-                smb.HttpGetEnabled = true;
-                selfHost.Description.Behaviors.Add(smb);
+                //selfHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
+                //ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+                //smb.HttpGetEnabled = true;
+                //selfHost.Description.Behaviors.Add(smb);
 
                 selfHost.Open();
 

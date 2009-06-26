@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnvironmentVariables.cs" />
-    <Compile Include="Service\IWiiTransfer.cs" />
+    <Compile Include="Service\IWiiService.cs" />
     <Compile Include="Business\NetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -109,30 +109,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Service References\WiiService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Business\ServiceCreator.cs" />
     <Compile Include="Service\SignalSample.cs" />
     <Compile Include="Business\WifiManager.cs" />
     <Compile Include="Business\WiimoteManager.cs" />
-    <Compile Include="Service\WiiTransfer.cs" />
+    <Compile Include="Service\WiiService.cs" />
     <Compile Include="Business\WMIHelper.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Service References\WiiService\Service.wsdl" />
-    <None Include="Service References\WiiService\Service.xsd" />
-    <None Include="Service References\WiiService\Service1.xsd" />
-    <None Include="Service References\WiiService\WiiTransfer.wsdl" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -153,24 +143,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\WiiService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WiiService\Service.disco" />
-    <None Include="Service References\WiiService\Service2.xsd" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WiiService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WiiService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\WiiService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\WiiService\Service3.xsd" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
