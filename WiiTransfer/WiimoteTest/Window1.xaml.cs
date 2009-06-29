@@ -338,7 +338,8 @@ namespace WiimoteTest
         //connect
         private void button7_Click(object sender, RoutedEventArgs e)
         {
-            wifiManager.Connect(lbNetworks.SelectedItem.ToString());
+            if (txtPassword.Password == "") wifiManager.Connect(lbNetworks.SelectedItem.ToString());
+            else wifiManager.ConnectToSecure(lbNetworks.SelectedItem.ToString(), txtPassword.Password);
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
