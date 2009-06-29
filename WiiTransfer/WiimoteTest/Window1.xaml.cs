@@ -357,7 +357,9 @@ namespace WiimoteTest
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            wifiManager.CreateAndConnect(txtNetworkName.Text);
+            if (txtPassword.Password == "") wifiManager.CreateUnsecureAndConnect(txtNetworkName.Text);
+            else wifiManager.CreateSecureAndConnect(txtNetworkName.Text, txtPassword.Password);
+
         }
 
         private void button6_Click(object sender, RoutedEventArgs e)
