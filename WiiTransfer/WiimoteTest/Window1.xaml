@@ -83,7 +83,7 @@
     		<!--<ProgressBar Height="19" Margin="46,0,0,0" Name="progressBar1" VerticalAlignment="Top" Maximum="1" Minimum="-1" />
         <ProgressBar Margin="46,25,0,0" Name="progressBar2" Maximum="1" Minimum="-1" Height="19" VerticalAlignment="Top" />
         <ProgressBar Height="21" Margin="46,50,0,0" Name="progressBar3" VerticalAlignment="Top" Maximum="1" Minimum="-1" />-->
-        <ScrollViewer Grid.Column="1" MaxWidth="800" HorizontalScrollBarVisibility="Visible" >
+        <ScrollViewer Grid.Column="1" MaxWidth="800" HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Left" Margin="0,0,0,253" Width="800">
     		<Canvas x:Name="canvas1" Height="400" Width="9000" Grid.Column="1"/>
     		</ScrollViewer>
         <Button Grid.Column="0" Height="23" HorizontalAlignment="Left" Margin="235,1.48,0,0" Name="button4" VerticalAlignment="Top" Width="85" Click="button4_Click">Create Service</Button>
@@ -91,5 +91,16 @@
         <ListBox VerticalAlignment="Bottom" Height="125.272" IsSynchronizedWithCurrentItem="True" Margin="8,0,8,8" SelectionChanged="WiimoteList_SelectionChanged" Name="WiimoteList"/>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,59,1,0" Name="button2" VerticalAlignment="Top" Width="85" Click="button2_Click">Sync Time</Button>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,88,0,0" Name="btnCalibrate" VerticalAlignment="Top" Width="86" Click="btnCalibrate_Click">Calibrate</Button>
+        <ListBox Grid.Column="1"  Height="135" HorizontalAlignment="Left" Margin="15,0,0,88" Name="lbNetworks" VerticalAlignment="Bottom" Width="212" />
+        <Label Grid.Column="1" Height="39.152" HorizontalAlignment="Left" Margin="15,261,0,0" Name="label10" VerticalAlignment="Top" Width="168">Available ad-hoc networks</Label>
+        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="144,0,0,28" Name="btnCreate" VerticalAlignment="Bottom" Width="83" Click="btnCreate_Click">Create</Button>
+        <Button Height="23" Margin="0,0,635,57" Name="btnRefresh" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" Width="61" Click="btnRefresh_Click">Refresh</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,573,57" Name="btnConnect" VerticalAlignment="Bottom" Width="56" Grid.Column="1" Click="button7_Click">Connect</Button>
+        <TextBox Grid.Column="1" Height="24" HorizontalAlignment="Left" Margin="57,0,0,28" Name="txtNetworkName" VerticalAlignment="Bottom" Width="80" />
+        <Label Grid.Column="1" Height="24" HorizontalAlignment="Left" Margin="15,0,0,28" Name="label11" VerticalAlignment="Bottom" Width="41">Name</Label>
+        <Button Height="23" HorizontalAlignment="Left" Margin="15,0,0,58" Name="btnDisconnect" VerticalAlignment="Bottom" Width="83" Grid.Column="1" Click="btnDisconnect_Click">Disconnect</Button>
+        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="245,0,0,200" Name="btnServerIP" VerticalAlignment="Bottom" Width="75" Click="button6_Click">Set Server IP</Button>
+        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="245,0,0,171" Name="btnClientIP" VerticalAlignment="Bottom" Width="75" Click="btnClientIP_Click">Set Client IP</Button>
+        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="245,0,0,142" Name="btnSerDHCP" VerticalAlignment="Bottom" Width="75" Click="btnSerDHCP_Click">SetDHCP</Button>
     </Grid>
 </Window>

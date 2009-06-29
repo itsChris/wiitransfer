@@ -21,21 +21,23 @@ namespace WiimoteTest
 		/// <param name="nicName">Name of the NIC</param>
 		public static void SetDHCP( string nicName )
 		{
-			ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
-			ManagementObjectCollection moc = mc.GetInstances();
+            IList<Win32_NetworkAdapterConfiguration> networkCollection = null;
+            NetworkAdapterConfiguration config = null;
 
-         
-			foreach(ManagementObject mo in moc)
-			{
-				// Make sure this is a IP enabled device. Not something like memory card or VM Ware
-				if( (bool)mo["IPEnabled"] )
-				{
-					if( mo["Caption"].Equals( nicName ) )
-					{
-						ManagementBaseObject newDNS = mo.GetMethodParameters( "SetDNSServerSearchOrder" );
-						newDNS[ "DNSServerSearchOrder" ] = null;
-						ManagementBaseObject enableDHCP = mo.InvokeMethod( "EnableDHCP", null, null);
-						ManagementBaseObject setDNS = mo.InvokeMethod( "SetDNSServerSearchOrder", newDNS, null);
+            config = new NetworkAdapterConfiguration();
+            networkCollection = config.SelectAll();
+
+
+            foreach (Win32_NetworkAdapterConfiguration netconfig in networkCollection)
+            {
+                // Make sure this is a IP enabled device. Not something like memory card or VM Ware
+                if (netconfig.IPEnabled)
+                {
+                    if (netconfig.Description == nicName)
+                    {
+                        netconfig.EnableDHCP();
+                        netconfig.SetDNSServerSearchOrder(new string[]{null});
+					
 					}
 				}
 			}
@@ -64,8 +66,8 @@ namespace WiimoteTest
 				if( netconfig.IPEnabled )
 				{
 					if( netconfig.Description == nicName )
-					{
-                       netconfig.EnableStatic(new string[]{"192.168.1.1"}, new string[]{"255.255.255.0"});
+					{   
+                       netconfig.EnableStatic(new string[] { IpAddresses }, new string[] { SubnetMask  });
                        netconfig.SetGateways(null, null);
                        netconfig.SetDNSServerSearchOrder(null);
                        //netconfig.SetGateways(new string[] { "192.168.2.2" }, new ushort[] { 1 });

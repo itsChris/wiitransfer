@@ -377,7 +377,7 @@ namespace NativeWifi
 			/// The method returns immediately. Progress is reported through the <see cref="WlanNotification"/> event.
 			/// </remarks>
 			public void Connect(Wlan.WlanConnectionMode connectionMode, Wlan.Dot11BssType bssType, string profile)
-			{
+			{   
 				Wlan.WlanConnectionParameters connectionParams = new Wlan.WlanConnectionParameters();
 				connectionParams.wlanConnectionMode = connectionMode;
 				connectionParams.profile = profile;

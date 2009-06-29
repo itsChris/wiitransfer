@@ -29,6 +29,8 @@ namespace WiimoteTest
         WiiServiceReference.WiiServiceClient client = null;
         EnvironmentVariables variables = new EnvironmentVariables();
         WiimoteManager wiimoteManager = new WiimoteManager();
+        WifiManager wifiManager = new WifiManager();
+        NetworkManager netManager = new NetworkManager();
         private delegate void UpdateWiimoteStateDelegate(object sender, WiimoteUpdatedEventArgs args);
         private delegate void UpdateGraphWithNewDataDelegate(List<SignalSample> sample);
 
@@ -40,7 +42,7 @@ namespace WiimoteTest
         DateTime DrawStart = DateTime.Now;
         DateTime DateLastSignalSent = DateTime.Now;
 
-        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
+        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1500) };
 
         public Window1()
         {
@@ -49,6 +51,7 @@ namespace WiimoteTest
             LayoutRoot.DataContext = variables;
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
             sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
+           
 
             //Form1 f = new Form1(); f.Show();
             //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
@@ -253,8 +256,8 @@ namespace WiimoteTest
                 tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
                 try
                 {
-                    //client.SendWiimoteData(sendseries);
-                    client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
+                    client.SendWiimoteData(sendseries);
+                    //client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
                     DateLastSignalSent = DateTime.Now;
                     //sampleList1.Clear();
                     client.Close();
@@ -330,6 +333,46 @@ namespace WiimoteTest
                     client = null;
                 }
             }
+        }
+
+        //connect
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            wifiManager.Connect(lbNetworks.SelectedItem.ToString());
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            lbNetworks.Items.Clear();
+            foreach (string n in wifiManager.getAvailableNetworks(true))
+            {
+                lbNetworks.Items.Add(n);
+            }
+        }
+
+        private void btnDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            wifiManager.Disconnect();
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            wifiManager.CreateAndConnect(txtNetworkName.Text);
+        }
+
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            netManager.SetIP(wifiManager.InterfaceDescription, "192.168.1.1", "255.255.255.0");
+        }
+
+        private void btnClientIP_Click(object sender, RoutedEventArgs e)
+        {
+            netManager.SetIP(wifiManager.InterfaceDescription, "192.168.1.2", "255.255.255.0");
+        }
+
+        private void btnSerDHCP_Click(object sender, RoutedEventArgs e)
+        {
+            netManager.SetAutoIp(wifiManager.InterfaceDescription);
         }
 
     }

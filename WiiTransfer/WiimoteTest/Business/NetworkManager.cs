@@ -7,18 +7,23 @@ namespace WiimoteTest
 {
     class NetworkManager
     {
-        public void GetIP()
+        public void GetIP(string InterfaceDescription)
         {
             string[] ipadresses = new string[200];
             string[] subnets = new string[200];
             string[] gateways = new string[200];
             string[] dns = new string[200];
-            //WMIHelper.GetIP(client.Interfaces[0].InterfaceDescription, out ipadresses, out subnets, out gateways, out dns);
+            WMIHelper.GetIP(InterfaceDescription, out ipadresses, out subnets, out gateways, out dns);
         }
 
-        public void SetIP()
+        public void SetIP(string InterfaceDescription,string ip,string mask)
         {
-            //WMIHelper.SetIP(client.Interfaces[0].InterfaceName, "192.168.1.1", "255.255.255.0", "192.168.1.2", "193.245.122.122");
+            WMIHelper.SetIP(InterfaceDescription, ip, mask, "192.168.1.2", "193.245.122.122");
+        }
+
+        public void SetAutoIp(string InterfaceDescription)
+        {
+            WMIHelper.SetDHCP(InterfaceDescription);
         }
 
     }

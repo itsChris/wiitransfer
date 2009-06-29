@@ -40,15 +40,21 @@ namespace WiimoteTest
             //connnotchanged = true;
         }
 
-        void getAvailableNetworks()
+        public List<string> getAvailableNetworks(bool adhoc)
         {
-            // lbNetworks.Items.Clear();
+            List<string> stringNetworks = new List<string>();
+            //client.Interfaces[0].Scan();
             networks = client.Interfaces[0].GetAvailableNetworkList(0);
 
             foreach (Wlan.WlanAvailableNetwork network in networks)
             {
-                string net = GetStringForSSID(network.dot11Ssid);
+                if (network.dot11BssType == Wlan.Dot11BssType.Independent)
+                {
+                    string net = GetStringForSSID(network.dot11Ssid);
+                    stringNetworks.Add(net);
+                }
             }
+            return stringNetworks;
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -56,25 +62,51 @@ namespace WiimoteTest
             client.Interfaces[0].Scan();
         }
 
-        private void Connect()
+        private string CurrentlyConnectedTo = "";
+        public void Connect(string Name)
         {
-            string profileName = "Cheesecake"; // this is also the SSID
+            Wlan.Dot11Ssid ssid = (from net in networks
+                                   where GetStringForSSID(net.dot11Ssid) == Name
+                                   select net.dot11Ssid).FirstOrDefault();
+            client.Interfaces[0].Connect(Wlan.WlanConnectionMode.DiscoveryUnsecure, Wlan.Dot11BssType.Independent, ssid,
+                                         Wlan.WlanConnectionFlags.AdhocJoinOnly);
+
+        }
+
+        public string InterfaceDescription
+        {
+            get
+            {
+                return client.Interfaces[0].InterfaceDescription;
+            }
+        }
+
+        public void CreateAndConnect(string Name)
+        {
+            string profileName = Name; // this is also the SSID
             string mac = "52544131303235572D454137443638";
             string key = "playstation3";
             string authtype = "WPA2PSK";
             string enctype = "AES";
             string keytype = "passPhrase";
+
             string profileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><hex>7261756C77706132</hex><name>{0}</name></SSID><nonBroadcast>false</nonBroadcast></SSIDConfig><connectionType>IBSS</connectionType><connectionMode>manual</connectionMode><MSM><security><authEncryption><authentication>{3}</authentication><encryption>{4}</encryption></authEncryption><sharedKey><keyType>{5}</keyType><protected>false</protected><keyMaterial>{2}</keyMaterial></sharedKey></security></MSM></WLANProfile>", profileName, mac, key, authtype, enctype, keytype);
-            client.Interfaces[0].SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
+            string openProfileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><hex>696F6E696361</hex><name>{0}</name></SSID><nonBroadcast>false</nonBroadcast></SSIDConfig><connectionType>IBSS</connectionType><connectionMode>manual</connectionMode><MSM><security><authEncryption><authentication>open</authentication><encryption>none</encryption><useOneX>false</useOneX></authEncryption></security></MSM></WLANProfile>", profileName);
+            client.Interfaces[0].SetProfile(Wlan.WlanProfileFlags.AllUser, openProfileXml, true);
 
-            client.Interfaces[0].Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, "raulwpa2");
-
+            client.Interfaces[0].Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Independent, profileName);
+            CurrentlyConnectedTo = profileName;
 
         }
 
-        private void Disconnect()
+        public void Disconnect()
         {
             client.Interfaces[0].Disconnect();
+            if (CurrentlyConnectedTo != "")
+            {
+                client.Interfaces[0].DeleteProfile(CurrentlyConnectedTo);
+                CurrentlyConnectedTo = "";
+            }
         }
 
 
