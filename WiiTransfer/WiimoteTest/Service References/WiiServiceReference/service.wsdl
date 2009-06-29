@@ -27,6 +27,18 @@
   <wsdl:message name="IWiiService_GetServerTime_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetServerTimeResponse" />
   </wsdl:message>
+  <wsdl:message name="IWiiService_Calibrate_InputMessage">
+    <wsdl:part name="parameters" element="tns:Calibrate" />
+  </wsdl:message>
+  <wsdl:message name="IWiiService_Calibrate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CalibrateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWiiService_SendWiimoteDataasHash_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendWiimoteDataasHash" />
+  </wsdl:message>
+  <wsdl:message name="IWiiService_SendWiimoteDataasHash_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendWiimoteDataasHashResponse" />
+  </wsdl:message>
   <wsdl:portType name="IWiiService">
     <wsdl:operation name="SendWiimoteData">
       <wsdl:input wsaw:Action="http://tempuri.org/IWiiService/SendWiimoteData" message="tns:IWiiService_SendWiimoteData_InputMessage" />
@@ -35,6 +47,14 @@
     <wsdl:operation name="GetServerTime">
       <wsdl:input wsaw:Action="http://tempuri.org/IWiiService/GetServerTime" message="tns:IWiiService_GetServerTime_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWiiService/GetServerTimeResponse" message="tns:IWiiService_GetServerTime_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Calibrate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWiiService/Calibrate" message="tns:IWiiService_Calibrate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWiiService/CalibrateResponse" message="tns:IWiiService_Calibrate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendWiimoteDataasHash">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWiiService/SendWiimoteDataasHash" message="tns:IWiiService_SendWiimoteDataasHash_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWiiService/SendWiimoteDataasHashResponse" message="tns:IWiiService_SendWiimoteDataasHash_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSHttpBinding_IWiiService" type="tns:IWiiService">
@@ -51,6 +71,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetServerTime">
       <soap12:operation soapAction="http://tempuri.org/IWiiService/GetServerTime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Calibrate">
+      <soap12:operation soapAction="http://tempuri.org/IWiiService/Calibrate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendWiimoteDataasHash">
+      <soap12:operation soapAction="http://tempuri.org/IWiiService/SendWiimoteDataasHash" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

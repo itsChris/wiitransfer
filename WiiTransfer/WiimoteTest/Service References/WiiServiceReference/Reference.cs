@@ -99,6 +99,12 @@ namespace WiimoteTest.WiiServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/GetServerTime", ReplyAction="http://tempuri.org/IWiiService/GetServerTimeResponse")]
         System.DateTime GetServerTime();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/Calibrate", ReplyAction="http://tempuri.org/IWiiService/CalibrateResponse")]
+        void Calibrate(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/SendWiimoteDataasHash", ReplyAction="http://tempuri.org/IWiiService/SendWiimoteDataasHashResponse")]
+        void SendWiimoteDataasHash(byte[] wiidata, System.DateTime startDate, int length);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -134,6 +140,14 @@ namespace WiimoteTest.WiiServiceReference {
         
         public System.DateTime GetServerTime() {
             return base.Channel.GetServerTime();
+        }
+        
+        public void Calibrate(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata) {
+            base.Channel.Calibrate(wiidata);
+        }
+        
+        public void SendWiimoteDataasHash(byte[] wiidata, System.DateTime startDate, int length) {
+            base.Channel.SendWiimoteDataasHash(wiidata, startDate, length);
         }
     }
 }

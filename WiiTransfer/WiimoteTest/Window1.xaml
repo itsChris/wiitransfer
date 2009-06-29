@@ -90,5 +90,6 @@
         <Button Grid.Column="0" Height="23" HorizontalAlignment="Left" Margin="234,30,0,0" Name="button5" VerticalAlignment="Top" Width="85" Click="button5_Click">Send</Button>
         <ListBox VerticalAlignment="Bottom" Height="125.272" IsSynchronizedWithCurrentItem="True" Margin="8,0,8,8" SelectionChanged="WiimoteList_SelectionChanged" Name="WiimoteList"/>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,59,1,0" Name="button2" VerticalAlignment="Top" Width="85" Click="button2_Click">Sync Time</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,88,0,0" Name="btnCalibrate" VerticalAlignment="Top" Width="86" Click="btnCalibrate_Click">Calibrate</Button>
     </Grid>
 </Window>

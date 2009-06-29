@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.IO;
 using System.Diagnostics;
 using System.ServiceModel;
+using System.Security.Cryptography;
 namespace WiimoteTest
 {
     /// <summary>
@@ -39,7 +40,7 @@ namespace WiimoteTest
         DateTime DrawStart = DateTime.Now;
         DateTime DateLastSignalSent = DateTime.Now;
 
-        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1500) };
+        DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
 
         public Window1()
         {
@@ -77,7 +78,7 @@ namespace WiimoteTest
             {
 
                 SignalSample adjustedSample = AdjustSample(e.SignalSample);
-                //DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
+                DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
                 
                 oldSample1 = adjustedSample;
                 sampleList1.Add(adjustedSample);
@@ -88,11 +89,12 @@ namespace WiimoteTest
                 }
             }
 
-            if (sampleList1.Count > 99 && receivedSampleList.Count > 99)
+            if (sampleList1.Count >1000)
             {
-                //DisplayMatchPercentage(sampleList1, receivedSampleList);
-                //sampleList1.Clear();
-                //receivedSampleList.Clear();
+                canvas1.Children.Clear();
+                DrawStart = DateTime.Now;
+                sampleList1.Clear();
+                receivedSampleList.Clear();
             }
         }
 
@@ -231,18 +233,40 @@ namespace WiimoteTest
             if (client != null)
             {
                 List<WiiServiceReference.SignalSample> sendseries = new List<WiiServiceReference.SignalSample>();
+                
+                int count = 0;
                 foreach (SignalSample s in sampleList)
                     if (s.TimeStamp > DateTime.Now - sendTimer.Interval)
                     //if (s.TimeStamp > DateLastSignalSent)
                     {
+                        
                         //WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
                         sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp+dateDifference, Source = s.Source });
                     }
-                client.SendWiimoteData(sendseries);
-                DateLastSignalSent = DateTime.Now;
-                sampleList1.Clear();
-                client.Close();
-                client = null;
+                byte[] send = new byte[sendseries.Count];
+                byte[] tmpsend;
+                foreach (WiiServiceReference.SignalSample s in sendseries)
+                {
+                    send[count] = Convert.ToByte(s.Sample.X);
+                    count++;
+                }
+                tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
+                try
+                {
+                    //client.SendWiimoteData(sendseries);
+                    client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
+                    DateLastSignalSent = DateTime.Now;
+                    //sampleList1.Clear();
+                    client.Close();
+                }
+                catch
+                {
+                }
+                finally
+                {
+                    client = null;
+                }
+                
 
             }
         }
@@ -266,9 +290,46 @@ namespace WiimoteTest
               if (client == null) client = new WiiServiceReference.WiiServiceClient();
               if (client != null)
               {
-                  DateTime serverTime = client.GetServerTime();
-                  dateDifference = (serverTime-DateTime.Now);
+                  try
+                  {
+                      DateTime serverTime = client.GetServerTime();
+                      dateDifference = (serverTime - DateTime.Now);
+                  }
+                  catch
+                  {
+                  }
+                  finally
+                  {
+                      client = null;
+                  }
+                  
               }
+        }
+
+        private void btnCalibrate_Click(object sender, RoutedEventArgs e)
+        {
+            if (client == null) client = new WiiServiceReference.WiiServiceClient();
+            if (client != null)
+            {
+                List<SignalSample> minSample = sampleList1.Take(100).ToList();
+                List<WiiServiceReference.SignalSample> sendseries = new List<WiiServiceReference.SignalSample>();
+                foreach (SignalSample s in minSample)
+                {
+                    //WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
+                    sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp + dateDifference, Source = s.Source });
+                }
+                try
+                {
+                    client.Calibrate(sendseries);
+                }
+                catch
+                {
+                }
+                finally
+                {
+                    client = null;
+                }
+            }
         }
 
     }
