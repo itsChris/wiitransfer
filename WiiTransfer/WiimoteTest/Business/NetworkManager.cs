@@ -19,6 +19,7 @@ namespace WiimoteTest
         public void SetIP(string InterfaceDescription,string ip,string mask)
         {
             WMIHelper.SetIP(InterfaceDescription, ip, mask, "192.168.1.2", "193.245.122.122");
+            
         }
 
         public void SetAutoIp(string InterfaceDescription)

@@ -23,25 +23,27 @@ namespace WiimoteTest
             client = new WlanClient();
             foreach (WlanClient.WlanInterface wlanIface in client.Interfaces)
             {
-                //lbInterfaces.Items.Add(wlanIface.InterfaceDescription);
-                wlanIface.WlanConnectionNotification += new WlanClient.WlanInterface.WlanConnectionNotificationEventHandler(wlanIface_WlanConnectionNotification);
-                wlanIface.WlanNotification += new WlanClient.WlanInterface.WlanNotificationEventHandler(wlanIface_WlanNotification);
+                wlanIface.WlanConnectionNotification += wlanIface_WlanConnectionNotification;
+                wlanIface.WlanNotification += wlanIface_WlanNotification;
             }
         }
         void wlanIface_WlanNotification(Wlan.WlanNotificationData notifyData)
         {
+          
             //notification = notifyData.NotificationCode.ToString();
             //notchanged = true;
         }
 
         void wlanIface_WlanConnectionNotification(Wlan.WlanNotificationData notifyData, Wlan.WlanConnectionNotificationData connNotifyData)
         {
+         
             //connnotification = notifyData.NotificationCode.ToString();
             //connnotchanged = true;
         }
 
         public List<string> getAvailableNetworks(bool adhoc)
         {
+            client.Interfaces[0].Scan();
             List<string> stringNetworks = new List<string>();
             //client.Interfaces[0].Scan();
             networks = client.Interfaces[0].GetAvailableNetworkList(0);

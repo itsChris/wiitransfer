@@ -109,7 +109,7 @@ namespace WiimoteTest
 
         public void UpdateGraphWithNewData(List<SignalSample> sample)
         {
-            double perc = GetSeriesMatchPercentage(sampleList1, sample, 5, 100);
+            double perc = GetSeriesMatchPercentage(sampleList1, sample, variables.EpsilonMaxim, 100);
             DrawSampleListGraph(sample, canvas1, Brushes.Red, 1);
             AddMarker(sample[0], canvas1, perc.ToString("N2"));
         }
@@ -144,15 +144,22 @@ namespace WiimoteTest
 
         void DrawGraph(SignalSample newRecord, SignalSample oldRecord, Canvas canvas, Brush brush, double thickness)
         {
+            
             Line ln = new Line();
             ln.X1 = (newRecord.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom;
-            ln.Y1 = newRecord.Sample.X * variables.SignalZoom;
+            ln.Y1 = newRecord.Sample.X * variables.SignalZoom-110*variables.SignalZoom+120;
+            
+            ln.X2 = (newRecord.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom+1;
+            ln.Y2 = newRecord.Sample.X * variables.SignalZoom - 110 * variables.SignalZoom + 120+1;
 
-            ln.X2 = (oldRecord.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom;
-            ln.Y2 = oldRecord.Sample.X * variables.SignalZoom;
+            //ln.X2 = (oldRecord.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom;
+            //ln.Y2 = oldRecord.Sample.X * variables.SignalZoom - 110 * variables.SignalZoom+120;
+
+            
+           
 
             ln.Stroke = brush;
-            ln.StrokeThickness = thickness;
+            ln.StrokeThickness = 1;
 
             canvas.Children.Add(ln);
         }
@@ -171,24 +178,22 @@ namespace WiimoteTest
         {
             int matches = 0;
 
-
-            if (series1.Count > 99 && series2.Count > 99)
-            {
-
-
                 series1.Reverse();
-                series1 = series1.Take(values).ToList();
+                series1 = series1.Take(series2.Count).ToList();
 
                 series2.Reverse();
-                series2 = series2.Take(values).ToList();
+                //series2 = series2.Take(values).ToList();
 
+                int counter = 0;
                 for (int i = 0; i < series1.Count; i++)
                 {
                     if (Math.Abs(series1[i].Sample.X - series2[i].Sample.X) <= epsilonMax) matches++;
+                    Debug.WriteLine(series1[i].Sample.X + " - " + series2[i].Sample.X + " = " + Math.Abs(series1[i].Sample.X - series2[i].Sample.X));
+                    counter++;
                 }
-            }
+            
 
-            return 100 * (double)matches / series1.Count;
+            return 100 * (double)matches / counter;
         }
 
 
@@ -270,7 +275,7 @@ namespace WiimoteTest
                 tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
                 try
                 {
-                    client.SendWiimoteData(sendseries);
+                    //client.SendWiimoteData(sendseries);
                     //client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
                     DateLastSignalSent = DateTime.Now;
                     //sampleList1.Clear();

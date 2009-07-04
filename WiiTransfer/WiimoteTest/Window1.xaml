@@ -65,7 +65,7 @@
     		
             <Label Margin="0,0,0,1.232" Content="Time Zoom" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="1"/>
             <Label Height="Auto" x:Name="label4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ContentStringFormat="N2" Width="Auto" Content="{Binding Path=TimeZoom, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"/>
-    		<Slider Height="22" x:Name="sliderTimeZoom" VerticalAlignment="Top" Minimum="30" Maximum="70" Value="{Binding Path=TimeZoom, Mode=TwoWay}" Width="Auto" HorizontalAlignment="Stretch"  Grid.Column="2" Grid.Row="1" />
+    		<Slider Height="22" x:Name="sliderTimeZoom" VerticalAlignment="Top" Minimum="30" Maximum="140" Value="{Binding Path=TimeZoom, Mode=TwoWay}" Width="Auto" HorizontalAlignment="Stretch"  Grid.Column="2" Grid.Row="1" />
     		
     		<Label Margin="0,0,0,1.232" Content="Signal Adjust" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="2"/>
     		<Label Height="Auto" x:Name="lblSignalAdjustment" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=SignalAdjustment, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
