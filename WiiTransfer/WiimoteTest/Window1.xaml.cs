@@ -232,6 +232,20 @@ namespace WiimoteTest
 
         private void SendSampleList(List<SignalSample> sampleList)
         {
+            //List<SignalSample> filteredList = new List<SignalSample>();
+            //DateTime beginDate = DateTime.Now;
+            //DateTime date = DateTime.Now-sendTimer.Interval;
+            //List<SignalSample> tempSample = (from s in sampleList1
+            //                                 where s.TimeStamp > DateTime.Now - sendTimer.Interval
+            //                                 select s).ToList();
+            //while (date < beginDate)
+            //{
+            //    SignalSample sample = (from s in tempSample
+            //                           orderby Math.Abs((s.TimeStamp - date).TotalMilliseconds)
+            //                           select s).FirstOrDefault();
+            //    int index = tempSample.IndexOf(sample);
+            //    date = date.AddMilliseconds(10);
+            //} 
             if (client == null) client = new WiiServiceReference.WiiServiceClient();
             if (client != null)
             {
