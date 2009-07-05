@@ -44,7 +44,7 @@ namespace WiimoteTest
         DateTime DateLastSignalSent = DateTime.Now;
 
         DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1500) };
-        DispatcherTimer samplerTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10), IsEnabled = true };
+        DispatcherTimer samplerTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50), IsEnabled = true };
 
         DateTime lastSampleTime = DateTime.Now;
         public Window1()
@@ -54,12 +54,18 @@ namespace WiimoteTest
             LayoutRoot.DataContext = variables;
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
             sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
-            
-           
+
+            samplerTimer.Tick += new EventHandler(samplerTimer_Tick);
 
             //Form1 f = new Form1(); f.Show();
             //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
 
+        }
+
+        void samplerTimer_Tick(object sender, EventArgs e)
+        {
+            adjustedSampleList1.Add(oldSample1);
+            DrawGraph(oldSample1, oldSample1, canvas1, Brushes.Red, 1);
         }
 
         
@@ -92,64 +98,66 @@ namespace WiimoteTest
                 {
                     //Debug.Write((adjustedSample.TimeStamp - oldSample1.TimeStamp).TotalMilliseconds);
                 }
-                DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
+                //DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
                 
 
                 oldSample1 = adjustedSample;
 
                 if (sampleList1.Count > 3)
                 {
-                    int captureMilisecond = (adjustedSample.TimeStamp.Millisecond - (adjustedSample.TimeStamp.Millisecond % 10));
+                    //int captureMilisecond = (adjustedSample.TimeStamp.Millisecond - (adjustedSample.TimeStamp.Millisecond % 100));
 
-                    SignalSample newSample = new SignalSample();
-                    newSample.TimeStamp = adjustedSample.TimeStamp - TimeSpan.FromMilliseconds(adjustedSample.TimeStamp.Millisecond % 10);
-                    newSample.Source = e.SignalSample.Source;
-                    int sampleX = 0;
-                    if (adjustedSample.TimeStamp.Millisecond >= captureMilisecond && sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond <= captureMilisecond)
+                    //SignalSample newSample = new SignalSample();
+                    //newSample.TimeStamp = adjustedSample.TimeStamp - TimeSpan.FromMilliseconds(adjustedSample.TimeStamp.Millisecond % 100);
+                    //newSample.Source = e.SignalSample.Source;
+                    //int sampleX = 0;
+                    //if (adjustedSample.TimeStamp.Millisecond >= captureMilisecond && sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond <= captureMilisecond)
 
-                    {
+                    //{
                        
-                        int oldSample = sampleList1[sampleList1.Count - 1].Sample.X;
-                        int currentSample = adjustedSample.Sample.X;
+                    //    int oldSample = sampleList1[sampleList1.Count - 1].Sample.X;
+                    //    int currentSample = adjustedSample.Sample.X;
 
 
-                        if ((adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) != 0)
-                        {
-                            sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) / (adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond)) * (currentSample - oldSample);
-                        }
-                        else
-                        {
-                            sampleX = oldSample;
-                        }
+                    //    if ((adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) != 0)
+                    //    {
+                    //        sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) / (adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond)) * (currentSample - oldSample);
+                    //    }
+                    //    else
+                    //    {
+                    //        sampleX = oldSample;
+                    //    }
 
-                        newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
-                        adjustedSampleList1.Add(newSample);
+                    //    newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
+                    //    adjustedSampleList1.Add(newSample);
                        
-                        oldSample2 = newSample;
-                    }
-                    else if (sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond >= captureMilisecond && sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond <= captureMilisecond)
-                    {
-                        int oldSample = sampleList1[sampleList1.Count - 2].Sample.X;
-                        int currentSample = sampleList1[sampleList1.Count - 1].Sample.X;
-                        if ((sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond) != 0)
-                        {
-                            sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond) / (sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond)) * (currentSample - oldSample);
-                        }
-                        else
-                        {
-                            sampleX = oldSample;
-                        }
-                        newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
-                        adjustedSampleList1.Add(newSample);
+                    //    oldSample2 = newSample;
+                    //}
+                    //else if (sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond >= captureMilisecond && sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond <= captureMilisecond)
+                    //{
+                    //    int oldSample = sampleList1[sampleList1.Count - 2].Sample.X;
+                    //    int currentSample = sampleList1[sampleList1.Count - 1].Sample.X;
+                    //    if ((sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond) != 0)
+                    //    {
+                    //        sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond) / (sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond)) * (currentSample - oldSample);
+                    //    }
+                    //    else
+                    //    {
+                    //        sampleX = oldSample;
+                    //    }
+                    //    newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
+                    //    adjustedSampleList1.Add(newSample);
 
-                        //Debug.WriteLine("Case1 -" +sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond + "  " + sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond+" capturem:"+captureMilisecond);
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Case2" + sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond + " " + sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond + " capturem:" + captureMilisecond);
-                    }
-                    DrawGraph(newSample, oldSample2, canvas1, Brushes.Blue, 1);
-                    oldSample2 = newSample;
+                    //    //Debug.WriteLine("Case1 -" +sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond + "  " + sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond+" capturem:"+captureMilisecond);
+                    //}
+                    //else
+                    //{
+                        
+
+                    //   // Debug.WriteLine("Case2" + adjustedSample.TimeStamp.Millisecond + " " + sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond + " capturem:" + captureMilisecond);
+                    //}
+                    //DrawGraph(newSample, oldSample2, canvas1, Brushes.Blue, 1);
+                   // oldSample2 = newSample;
                 }
 
                 //sampleList1[sampleList1.Count - 1].TimeStamp - adjustedSample.TimeStamp).TotalMilliseconds
@@ -369,7 +377,7 @@ namespace WiimoteTest
                 tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
                 try
                 {
-                    //client.SendWiimoteData(sendseries);
+                    client.SendWiimoteData(sendseries);
                     //client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
                     DateLastSignalSent = DateTime.Now;
                     //sampleList1.Clear();
