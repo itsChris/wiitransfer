@@ -207,6 +207,7 @@ namespace WiimoteTest
 
                                 MarkTop(sampleList1[n - check], canvas1, Brushes.Brown, countTops.ToString());
                                 textBlock1.Text += "1";
+                                KeyCode += "0";
                                 countTops++;
                                 lastTop = sampleList1[n - check];
                             }
@@ -222,6 +223,7 @@ namespace WiimoteTest
                             {
                                 MarkTop(sampleList1[n - check], canvas1, Brushes.BlueViolet, countTops.ToString());
                                 textBlock1.Text += "0";
+                                KeyCode += "0";
                                 countTops++;
                                 lastBottom = sampleList1[n - check];
                             }
@@ -251,6 +253,12 @@ namespace WiimoteTest
                 //sampleList1.Clear();
                 //receivedSampleList.Clear();
             }
+        }
+
+        internal string KeyCode
+        {
+            get;
+            set;
         }
 
         int countTops = 0;
@@ -485,6 +493,13 @@ namespace WiimoteTest
                 
 
             }
+        }
+
+        void SendHash(string toSend)
+        {
+            byte[] tmpsend;
+            //tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
+
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
