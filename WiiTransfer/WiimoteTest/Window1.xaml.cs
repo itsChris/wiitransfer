@@ -117,6 +117,10 @@ namespace WiimoteTest
                         {
                             sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) / (adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond)) * (currentSample - oldSample);
                         }
+                        else
+                        {
+                            sampleX = oldSample;
+                        }
 
                         newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
                         adjustedSampleList1.Add(newSample);
@@ -130,6 +134,10 @@ namespace WiimoteTest
                         if ((sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond) != 0)
                         {
                             sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond) / (sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond - sampleList1[sampleList1.Count - 2].TimeStamp.Millisecond)) * (currentSample - oldSample);
+                        }
+                        else
+                        {
+                            sampleX = oldSample;
                         }
                         newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
                         adjustedSampleList1.Add(newSample);
@@ -243,50 +251,39 @@ namespace WiimoteTest
         {
             int matches = 0;
 
-                int counter = 0;
-                int n = Math.Min(series1.Count, series2.Count) - 1;
-                int decalaj = 0;
-                
-                for (int i = 0; i < n ; i++)
+            int counter = 0;
+            int n = Math.Min(series1.Count, series2.Count) - 1;
+            int decalaj = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+                if (series1.Count > i)
                 {
-                    if (series1.Count > i)
+                    int compare1signal = series1[series1.Count - i - 1].Sample.X;
+                    int compare2signal = series2[n - i].Sample.X;
+                    double compare1time = (series2[n - i].TimeStamp - DrawStart).TotalSeconds;
+                    double compare2time = (series1[series1.Count - i - 1].TimeStamp - DrawStart).TotalSeconds;
+
+                    Debug.WriteLine(compare1time - compare2time + "%");
+                    if (Math.Abs(compare1signal - compare2signal) <= epsilonMax)
+                    //Debug.WriteLine(series1[n-i].Sample.X + " - " + series2[i].Sample.X + " = " + Math.Abs(series1[i].Sample.X - series2[i].Sample.X));
                     {
-                        int compare1signal = series1[series1.Count - i - 1].Sample.X;
-                        int compare2signal = series2[n - i].Sample.X;
-                        double compare1time = (series2[n - i].TimeStamp - DrawStart).TotalSeconds;
-                        double compare2time = (series1[series1.Count - i - 1].TimeStamp - DrawStart).TotalSeconds;
-
-                        Debug.WriteLine(compare1time - compare2time + "%");
-                        if (Math.Abs(compare1signal - compare2signal) <= epsilonMax)
-                        //Debug.WriteLine(series1[n-i].Sample.X + " - " + series2[i].Sample.X + " = " + Math.Abs(series1[i].Sample.X - series2[i].Sample.X));
-                        {
-                            matches++;
-
-<<<<<<< .mine
+                        matches++;
 
 
-                            Line l = new Line();
-                            l.Y1 = compare1signal * variables.SignalZoom - 110 * variables.SignalZoom + 120;
-                            l.X1 = compare1time * variables.TimeZoom;
-                            l.Y2 = compare2signal * variables.SignalZoom - 110 * variables.SignalZoom + 120;
-                            l.X2 = compare2time * variables.TimeZoom;
-                            l.Stroke = Brushes.Brown;
-                            l.StrokeThickness = 0.3;
-                            canvas1.Children.Add(l);
 
-                        }
+                        Line l = new Line();
+                        l.Y1 = compare1signal * variables.SignalZoom - 110 * variables.SignalZoom + 120;
+                        l.X1 = compare1time * variables.TimeZoom;
+                        l.Y2 = compare2signal * variables.SignalZoom - 110 * variables.SignalZoom + 120;
+                        l.X2 = compare2time * variables.TimeZoom;
+                        l.Stroke = Brushes.Brown;
+                        l.StrokeThickness = 0.3;
+                        canvas1.Children.Add(l);
+
                     }
-=======
-                int counter = 0;
-                for (int i = 0; i < series1.Count; i++)
-                {
-                    if (Math.Abs(series1[i].Sample.X - series2[i].Sample.X) <= epsilonMax) matches++;
-                    //Debug.WriteLine(series1[i].Sample.X + " - " + series2[i].Sample.X + " = " + Math.Abs(series1[i].Sample.X - series2[i].Sample.X));
->>>>>>> .r29
-                    counter++;
                 }
-            
-
+            }
             return 100 * (double)matches / counter;
         }
 
