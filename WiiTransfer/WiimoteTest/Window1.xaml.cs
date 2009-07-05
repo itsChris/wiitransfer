@@ -37,6 +37,7 @@ namespace WiimoteTest
         SignalSample oldSample1 = new SignalSample();
         SignalSample oldSample2 = new SignalSample();
         List<SignalSample> sampleList1 = new List<SignalSample>();
+        List<SignalSample> adjustedSampleList1 = new List<SignalSample>();
         List<SignalSample> receivedSampleList = new List<SignalSample>();
 
         DateTime DrawStart = DateTime.Now;
@@ -84,14 +85,38 @@ namespace WiimoteTest
                 DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
                 
                 oldSample1 = adjustedSample;
+
+                if (sampleList1.Count > 0)
+                {
+                    int captureMilisecond = (adjustedSample.TimeStamp.Millisecond - (adjustedSample.TimeStamp.Millisecond % 10));
+                    if (adjustedSample.TimeStamp.Millisecond > captureMilisecond && sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond < captureMilisecond)
+                    {
+                        SignalSample newSample = new SignalSample();
+                        newSample.TimeStamp = adjustedSample.TimeStamp - TimeSpan.FromMilliseconds(adjustedSample.TimeStamp.Millisecond % 10);
+                        newSample.Source = e.SignalSample.Source;
+                        int oldSample = sampleList1[sampleList1.Count-1].Sample.X;
+                        int currentSample = adjustedSample.Sample.X;
+                        int sampleX = oldSample  + ((captureMilisecond-sampleList1[sampleList1.Count-1].TimeStamp.Millisecond)/(adjustedSample.TimeStamp.Millisecond-sampleList1[sampleList1.Count-1].TimeStamp.Millisecond))*(currentSample - oldSample);
+                        newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
+                        adjustedSampleList1.Add(newSample);
+                        DrawGraph(newSample, oldSample2, canvas1, Brushes.Blue, 1);
+                        oldSample2 = newSample;
+                    }
+                   
+                }
+
+                //sampleList1[sampleList1.Count - 1].TimeStamp - adjustedSample.TimeStamp).TotalMilliseconds
+               
+
                 sampleList1.Add(adjustedSample);
-                
                 if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
                 {
                     sendTimer.IsEnabled = true;
                 }
+
             }
 
+           
             if (sampleList1.Count >1000)
             {
                 canvas1.Children.Clear();
@@ -123,6 +148,7 @@ namespace WiimoteTest
                 Y = adjustedSample.Sample.Y,
                 Z = adjustedSample.Sample.Z
             };
+            adjustedSample.TimeStamp += dateDifference;
             return adjustedSample;
 
         }
@@ -237,6 +263,9 @@ namespace WiimoteTest
 
         private void SendSampleList(List<SignalSample> sampleList)
         {
+            //DateTime remoteTime = DateTime.Now + dateDifference;
+             
+
             //List<SignalSample> filteredList = new List<SignalSample>();
             //DateTime beginDate = DateTime.Now;
             //DateTime date = DateTime.Now-sendTimer.Interval;
@@ -257,13 +286,13 @@ namespace WiimoteTest
                 List<WiiServiceReference.SignalSample> sendseries = new List<WiiServiceReference.SignalSample>();
                 
                 int count = 0;
-                foreach (SignalSample s in sampleList)
+                foreach (SignalSample s in adjustedSampleList1)
                     if (s.TimeStamp > DateTime.Now - sendTimer.Interval)
                     //if (s.TimeStamp > DateLastSignalSent)
                     {
                         
                         //WiiServiceReference.Point3 p = new WiimoteTest.WiiServiceReference.Point3() { X = s.Sample.X, Y = s.Sample.Y, Z = s.Sample.Z };
-                        sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp+dateDifference, Source = s.Source });
+                        sendseries.Add(new WiiServiceReference.SignalSample() { Sample = s.Sample, TimeStamp = s.TimeStamp, Source = s.Source });
                     }
                 byte[] send = new byte[sendseries.Count];
                 byte[] tmpsend;
@@ -275,7 +304,7 @@ namespace WiimoteTest
                 tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
                 try
                 {
-                    //client.SendWiimoteData(sendseries);
+                    client.SendWiimoteData(sendseries);
                     //client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
                     DateLastSignalSent = DateTime.Now;
                     //sampleList1.Clear();
