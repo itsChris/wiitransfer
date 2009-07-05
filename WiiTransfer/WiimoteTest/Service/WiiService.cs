@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace WiimoteTest.Service
 {
@@ -22,8 +23,10 @@ namespace WiimoteTest.Service
 
         public bool CheckWiimoteDataHash(byte[] data)
         {
-            byte[] localdata = Encoding.ASCII.GetBytes(
-            return true;
+            byte[] localdata = Encoding.ASCII.GetBytes(App.window.KeyCode);
+            byte[] localhash = new MD5CryptoServiceProvider().ComputeHash(localdata);
+            return localhash==data;
+            App.window.KeyCode = "";
         }
     }
 }
