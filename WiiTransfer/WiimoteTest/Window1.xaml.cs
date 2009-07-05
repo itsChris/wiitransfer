@@ -44,7 +44,9 @@ namespace WiimoteTest
         DateTime DateLastSignalSent = DateTime.Now;
 
         DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1500) };
+        DispatcherTimer samplerTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10), IsEnabled = true };
 
+        DateTime lastSampleTime = DateTime.Now;
         public Window1()
         {
             currentWindow = this;
@@ -52,12 +54,15 @@ namespace WiimoteTest
             LayoutRoot.DataContext = variables;
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
             sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
+            
            
 
             //Form1 f = new Form1(); f.Show();
             //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
 
         }
+
+        
 
         void OnMatchingTimer(object sender, EventArgs e)
         {
@@ -82,8 +87,14 @@ namespace WiimoteTest
             {
 
                 SignalSample adjustedSample = AdjustSample(e.SignalSample);
+
+                if((adjustedSample.TimeStamp-oldSample1.TimeStamp).TotalMilliseconds<=0)
+                {
+                    //Debug.Write((adjustedSample.TimeStamp - oldSample1.TimeStamp).TotalMilliseconds);
+                }
                 DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
                 
+
                 oldSample1 = adjustedSample;
 
                 if (sampleList1.Count > 0)
@@ -304,7 +315,7 @@ namespace WiimoteTest
                 tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
                 try
                 {
-                    client.SendWiimoteData(sendseries);
+                    //client.SendWiimoteData(sendseries);
                     //client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
                     DateLastSignalSent = DateTime.Now;
                     //sampleList1.Clear();
