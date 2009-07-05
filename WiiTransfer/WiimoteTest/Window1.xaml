@@ -105,5 +105,6 @@
         <Label Height="24" HorizontalAlignment="Left" Margin="15,0,0,8" Name="label12" VerticalAlignment="Bottom" Width="41" Grid.Column="1">Pass
         </Label>
         <PasswordBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="57,0,0,8" Name="txtPassword" VerticalAlignment="Bottom" Width="81" />
+        <TextBlock Grid.Column="1" Height="135" HorizontalAlignment="Left" Margin="359,0,0,88" Name="textBlock1" VerticalAlignment="Bottom" Width="429" TextWrapping="Wrap" />
     </Grid>
 </Window>

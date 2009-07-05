@@ -55,7 +55,7 @@ namespace WiimoteTest
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
             sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
 
-            samplerTimer.Tick += new EventHandler(samplerTimer_Tick);
+            //samplerTimer.Tick += new EventHandler(samplerTimer_Tick);
 
             //Form1 f = new Form1(); f.Show();
             //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
@@ -98,13 +98,14 @@ namespace WiimoteTest
                 {
                     //Debug.Write((adjustedSample.TimeStamp - oldSample1.TimeStamp).TotalMilliseconds);
                 }
-                //DrawGraph(adjustedSample, oldSample1, canvas1, Brushes.Blue, 1);
+                DrawGraph(adjustedSample, adjustedSample, canvas1, Brushes.Blue, 1);
                 
 
                 oldSample1 = adjustedSample;
 
                 if (sampleList1.Count > 3)
                 {
+                   
                     //int captureMilisecond = (adjustedSample.TimeStamp.Millisecond - (adjustedSample.TimeStamp.Millisecond % 100));
 
                     //SignalSample newSample = new SignalSample();
@@ -164,12 +165,35 @@ namespace WiimoteTest
                
 
                 sampleList1.Add(adjustedSample);
+
+                if(sampleList1.Count>3)
+                {
+                    if (sampleList1[sampleList1.Count - 1].Sample.X <= sampleList1[sampleList1.Count - 2].Sample.X && sampleList1[sampleList1.Count - 2].Sample.X >= sampleList1[sampleList1.Count - 3].Sample.X)
+                    {
+                        if (Math.Abs(sampleList1[sampleList1.Count - 2].Sample.X - 125) > 25)
+                        {
+                            MarkTop(sampleList1[sampleList1.Count - 2], canvas1, Brushes.Brown);
+                            textBlock1.Text += "1";
+                        }
+                    }
+
+                    if (sampleList1[sampleList1.Count - 1].Sample.X >= sampleList1[sampleList1.Count - 2].Sample.X && sampleList1[sampleList1.Count - 2].Sample.X <= sampleList1[sampleList1.Count - 3].Sample.X)
+                    {
+                        if (Math.Abs(sampleList1[sampleList1.Count - 2].Sample.X - 125) > 25)
+                        {
+                            MarkTop(sampleList1[sampleList1.Count - 2], canvas1, Brushes.Brown);
+                            textBlock1.Text += "0";
+                        }
+                    }
+                }
                 if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
                 {
                     sendTimer.IsEnabled = true;
                 }
 
             }
+
+           
 
            
             if (sampleList1.Count >1000)
@@ -179,6 +203,17 @@ namespace WiimoteTest
                 sampleList1.Clear();
                 receivedSampleList.Clear();
             }
+        }
+
+        void MarkTop(SignalSample sample, Canvas camvas1, Brush b)
+        {
+            Line ln = new Line();
+            ln.X1 = (sample.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom-2;
+            ln.X2 = (sample.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom+2;
+            ln.Y1 = ln.Y2 = (sample.Sample.X * variables.SignalZoom - 110 * variables.SignalZoom + 120);
+            ln.Stroke = b;
+            ln.StrokeThickness = 1;
+            canvas1.Children.Add(ln);
         }
 
         public void ReceiveSampleList(List<SignalSample> sample)
@@ -377,7 +412,7 @@ namespace WiimoteTest
                 tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
                 try
                 {
-                    client.SendWiimoteData(sendseries);
+                    //client.SendWiimoteData(sendseries);
                     //client.SendWiimoteDataasHash(tmpsend,sendseries[0].TimeStamp,sendseries.Count);
                     DateLastSignalSent = DateTime.Now;
                     //sampleList1.Clear();
