@@ -100,20 +100,24 @@ namespace WiimoteTest
                 if (sampleList1.Count > 3)
                 {
                     int captureMilisecond = (adjustedSample.TimeStamp.Millisecond - (adjustedSample.TimeStamp.Millisecond % 10));
+
                     SignalSample newSample = new SignalSample();
                     newSample.TimeStamp = adjustedSample.TimeStamp - TimeSpan.FromMilliseconds(adjustedSample.TimeStamp.Millisecond % 10);
                     newSample.Source = e.SignalSample.Source;
                     int sampleX = 0;
                     if (adjustedSample.TimeStamp.Millisecond >= captureMilisecond && sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond <= captureMilisecond)
+
                     {
                        
                         int oldSample = sampleList1[sampleList1.Count - 1].Sample.X;
                         int currentSample = adjustedSample.Sample.X;
 
+
                         if ((adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) != 0)
                         {
                             sampleX = oldSample + ((captureMilisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond) / (adjustedSample.TimeStamp.Millisecond - sampleList1[sampleList1.Count - 1].TimeStamp.Millisecond)) * (currentSample - oldSample);
                         }
+
                         newSample.Sample = new Point3() { Y = e.SignalSample.Sample.Y, Z = e.SignalSample.Sample.Z, X = sampleX };
                         adjustedSampleList1.Add(newSample);
                        
@@ -169,7 +173,7 @@ namespace WiimoteTest
 
         public void UpdateGraphWithNewData(List<SignalSample> sample)
         {
-            double perc = GetSeriesMatchPercentage(sampleList1, sample, variables.EpsilonMaxim, 100);
+            double perc = GetSeriesMatchPercentage(adjustedSampleList1, sample, variables.EpsilonMaxim, 100);
             DrawSampleListGraph(sample, canvas1, Brushes.Red, 1);
             AddMarker(sample[0], canvas1, perc.ToString("N2"));
         }
@@ -239,17 +243,46 @@ namespace WiimoteTest
         {
             int matches = 0;
 
-                series1.Reverse();
-                series1 = series1.Take(series2.Count).ToList();
+                int counter = 0;
+                int n = Math.Min(series1.Count, series2.Count) - 1;
+                int decalaj = 0;
+                
+                for (int i = 0; i < n ; i++)
+                {
+                    if (series1.Count > i)
+                    {
+                        int compare1signal = series1[series1.Count - i - 1].Sample.X;
+                        int compare2signal = series2[n - i].Sample.X;
+                        double compare1time = (series2[n - i].TimeStamp - DrawStart).TotalSeconds;
+                        double compare2time = (series1[series1.Count - i - 1].TimeStamp - DrawStart).TotalSeconds;
 
-                series2.Reverse();
-                //series2 = series2.Take(values).ToList();
+                        Debug.WriteLine(compare1time - compare2time + "%");
+                        if (Math.Abs(compare1signal - compare2signal) <= epsilonMax)
+                        //Debug.WriteLine(series1[n-i].Sample.X + " - " + series2[i].Sample.X + " = " + Math.Abs(series1[i].Sample.X - series2[i].Sample.X));
+                        {
+                            matches++;
 
+<<<<<<< .mine
+
+
+                            Line l = new Line();
+                            l.Y1 = compare1signal * variables.SignalZoom - 110 * variables.SignalZoom + 120;
+                            l.X1 = compare1time * variables.TimeZoom;
+                            l.Y2 = compare2signal * variables.SignalZoom - 110 * variables.SignalZoom + 120;
+                            l.X2 = compare2time * variables.TimeZoom;
+                            l.Stroke = Brushes.Brown;
+                            l.StrokeThickness = 0.3;
+                            canvas1.Children.Add(l);
+
+                        }
+                    }
+=======
                 int counter = 0;
                 for (int i = 0; i < series1.Count; i++)
                 {
                     if (Math.Abs(series1[i].Sample.X - series2[i].Sample.X) <= epsilonMax) matches++;
                     //Debug.WriteLine(series1[i].Sample.X + " - " + series2[i].Sample.X + " = " + Math.Abs(series1[i].Sample.X - series2[i].Sample.X));
+>>>>>>> .r29
                     counter++;
                 }
             
