@@ -19,5 +19,11 @@ namespace WiimoteTest.Service
         {
             return DateTime.Now - TimeSpan.FromMilliseconds(-20);
         }
+
+        public bool CheckWiimoteDataHash(byte[] data)
+        {
+            byte[] localdata = Encoding.ASCII.GetBytes(
+            return true;
+        }
     }
 }

@@ -15,5 +15,9 @@ namespace WiimoteTest.Service
 
         [OperationContract]
         DateTime GetServerTime();
+
+        [OperationContract]
+        bool CheckWiimoteDataHash(byte[] data);
+        
     }
 }
