@@ -44,7 +44,7 @@ namespace WiimoteTest
         DateTime DateLastSignalSent = DateTime.Now;
 
         DispatcherTimer sendTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(1500) };
-        DispatcherTimer samplerTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50), IsEnabled = true };
+        DispatcherTimer samplerTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(200), IsEnabled = true };
 
         DateTime lastSampleTime = DateTime.Now;
         public Window1()
@@ -55,17 +55,25 @@ namespace WiimoteTest
             wiimoteManager.WiimoteUpdated += new EventHandler<WiimoteUpdatedEventArgs>(OnWiimoteUpdated);
             sendTimer.Tick += (s, ev) => { SendSampleList(sampleList1); sendTimer.IsEnabled = false; };
 
-            //samplerTimer.Tick += new EventHandler(samplerTimer_Tick);
+            samplerTimer.Tick += new EventHandler(samplerTimer_Tick);
+            
 
             //Form1 f = new Form1(); f.Show();
             //new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5), IsEnabled = true }.Tick += new EventHandler(OnMatchingTimer);
 
         }
 
+        
         void samplerTimer_Tick(object sender, EventArgs e)
         {
-            adjustedSampleList1.Add(oldSample1);
-            DrawGraph(oldSample1, oldSample1, canvas1, Brushes.Red, 1);
+            if (countTops > 10)
+            {
+                SendHash(KeyCode);
+                countTops = 0;
+                textBlock1.Text = "";
+                KeyCode = "";
+            }
+
         }
 
         
@@ -231,6 +239,8 @@ namespace WiimoteTest
                         }
                     }
                 }
+
+               
               
                 if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
                 {
@@ -498,9 +508,41 @@ namespace WiimoteTest
         void SendHash(string toSend)
         {
             byte[] tmpsend;
-            //tmpsend = new MD5CryptoServiceProvider().ComputeHash(send);
+            tmpsend = new MD5CryptoServiceProvider().ComputeHash(Encoding.ASCII.GetBytes(toSend));
+            if (client == null)
+            {
+                client = new WiiServiceReference.WiiServiceClient();
+                client.CheckWiimoteDataHashCompleted += new EventHandler<WiimoteTest.WiiServiceReference.CheckWiimoteDataHashCompletedEventArgs>(client_CheckWiimoteDataHashCompleted);
+            }
+             if (client != null)
+             {
+                 try
+                 {
+                     client.CheckWiimoteDataHashAsync(tmpsend);
+                     DateLastSignalSent = DateTime.Now;
+                     client.Close();
+                 }
+                 catch
+                 {
+                 }
+                 finally
+                 {
+                     client = null;
+                 }
+             }
+
+            
 
         }
+
+        void client_CheckWiimoteDataHashCompleted(object sender, WiimoteTest.WiiServiceReference.CheckWiimoteDataHashCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                txtNetworkName.Text = e.Result.ToString();
+            }
+        }
+
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
@@ -551,7 +593,7 @@ namespace WiimoteTest
                 }
                 try
                 {
-                    client.Calibrate(sendseries);
+                    //client.Calibrate(sendseries);
                 }
                 catch
                 {
