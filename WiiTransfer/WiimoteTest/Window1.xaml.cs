@@ -166,14 +166,14 @@ namespace WiimoteTest
 
                 sampleList1.Add(adjustedSample);
 
-                if(sampleList1.Count>8)
+                if(sampleList1.Count>10)
                 {
                     int n = sampleList1.Count - 1;
 
-                    int check = 4;
+                    int check = 3;
                     bool topChecks =true;
                     bool bottomChecks =true;
-                    for (int i = 1; i<=check; i++)
+                    for (int i = 0; i<=check; i++)
                     {
                         if(sampleList1[n-check+i].Sample.X<sampleList1[n-check].Sample.X)
                         {
@@ -201,8 +201,16 @@ namespace WiimoteTest
                     {
                         if (Math.Abs(sampleList1[n -check].Sample.X - 125) > 25)
                         {
-                            MarkTop(sampleList1[n - check], canvas1, Brushes.Brown);
-                            textBlock1.Text += "1";
+                            if ((sampleList1[n - check].TimeStamp - lastTop.TimeStamp).TotalMilliseconds > 300)
+                            {
+
+
+                                MarkTop(sampleList1[n - check], canvas1, Brushes.Brown, countTops.ToString());
+                                textBlock1.Text += "1";
+                                countTops++;
+                                lastTop = sampleList1[n - check];
+                            }
+
                         }
                     }
 
@@ -210,15 +218,24 @@ namespace WiimoteTest
                     {
                         if (Math.Abs(sampleList1[n - check].Sample.X - 125) > 25)
                         {
-                            MarkTop(sampleList1[n - check], canvas1, Brushes.BlueViolet);
-                            textBlock1.Text += "0";
+                            if ((sampleList1[n - check].TimeStamp - lastBottom.TimeStamp).TotalMilliseconds > 300)
+                            {
+                                MarkTop(sampleList1[n - check], canvas1, Brushes.BlueViolet, countTops.ToString());
+                                textBlock1.Text += "0";
+                                countTops++;
+                                lastBottom = sampleList1[n - check];
+                            }
+
                         }
                     }
                 }
+              
                 if (Math.Abs(e.SignalSample.Sample.X - 124) > 25 && !sendTimer.IsEnabled)
                 {
                     sendTimer.IsEnabled = true;
                 }
+
+               
 
             }
 
@@ -236,7 +253,11 @@ namespace WiimoteTest
             }
         }
 
-        void MarkTop(SignalSample sample, Canvas camvas1, Brush b)
+        int countTops = 0;
+        SignalSample lastTop = new SignalSample();
+        SignalSample lastBottom = new SignalSample();
+
+        void MarkTop(SignalSample sample, Canvas camvas1, Brush b, string text)
         {
             Line ln = new Line();
             ln.X1 = (sample.TimeStamp - DrawStart).TotalSeconds * variables.TimeZoom-2;
@@ -244,6 +265,11 @@ namespace WiimoteTest
             ln.Y1 = ln.Y2 = (sample.Sample.X * variables.SignalZoom - 110 * variables.SignalZoom + 120);
             ln.Stroke = b;
             ln.StrokeThickness = 1;
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            Canvas.SetLeft(tb,ln.X1+10);
+            Canvas.SetTop(tb,ln.Y1+10);
+            canvas1.Children.Add(tb);
             canvas1.Children.Add(ln);
         }
 
