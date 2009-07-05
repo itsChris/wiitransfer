@@ -199,7 +199,7 @@ namespace WiimoteTest
                     }
                     if (topChecks)
                     {
-                        if (Math.Abs(sampleList1[n -check].Sample.X - 125) > 25)
+                        if (sampleList1[n -check].Sample.X - 125 < -25)
                         {
                             if ((sampleList1[n - check].TimeStamp - lastTop.TimeStamp).TotalMilliseconds > 300)
                             {
@@ -216,7 +216,7 @@ namespace WiimoteTest
 
                     if (bottomChecks)
                     {
-                        if (Math.Abs(sampleList1[n - check].Sample.X - 125) > 25)
+                        if (sampleList1[n - check].Sample.X - 125 > 25)
                         {
                             if ((sampleList1[n - check].TimeStamp - lastBottom.TimeStamp).TotalMilliseconds > 300)
                             {
@@ -246,10 +246,10 @@ namespace WiimoteTest
            
             if (sampleList1.Count >1000)
             {
-                canvas1.Children.Clear();
-                DrawStart = DateTime.Now;
-                sampleList1.Clear();
-                receivedSampleList.Clear();
+                //canvas1.Children.Clear();
+                //DrawStart = DateTime.Now;
+                //sampleList1.Clear();
+                //receivedSampleList.Clear();
             }
         }
 
