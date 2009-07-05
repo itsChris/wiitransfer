@@ -17,7 +17,7 @@ namespace WiimoteTest.Service
 
         public DateTime GetServerTime()
         {
-            return DateTime.Now;
+            return DateTime.Now - TimeSpan.FromMilliseconds(-20);
         }
     }
 }
