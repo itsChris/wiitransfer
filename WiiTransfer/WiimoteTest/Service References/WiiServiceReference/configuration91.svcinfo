@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="ZPdtBkYClpsO2E4pc06kfo3CPWM=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="3c/fVcLYXZ5z8dETAqr5x9onin4=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_IWiiService">
       <properties>
@@ -127,10 +127,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSHttpBinding_IWiiService" contract="WiiServiceReference.IWiiService" bindingType="wsHttpBinding" address="http://192.168.1.105:8000/Service/WiiService/" bindingConfiguration="WSHttpBinding_IWiiService">
+    <endpoint name="WSHttpBinding_IWiiService" contract="WiiServiceReference.IWiiService" bindingType="wsHttpBinding" address="http://192.168.1.102:8000/Service/WiiService/" bindingConfiguration="WSHttpBinding_IWiiService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://192.168.1.105:8000/Service/WiiService/</serializedValue>
+          <serializedValue>http://192.168.1.102:8000/Service/WiiService/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -169,7 +169,7 @@
           <serializedValue>System.ServiceModel.Configuration.DnsElement</serializedValue>
         </property>
         <property path="/identity/dns/value" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>192.168.1.105</serializedValue>
+          <serializedValue>192.168.1.102</serializedValue>
         </property>
         <property path="/identity/rsa" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.RsaElement, System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.RsaElement</serializedValue>

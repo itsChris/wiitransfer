@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://192.168.1.105:8000/Service/WiiService/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="http://192.168.1.102:8000/Service/WiiService/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="500256f4-eed6-4856-b725-cd6567eefa4c" SourceId="1" SourceUrl="http://192.168.1.105:8000/Service/WiiService/mex" />
-    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="2a66ce27-957c-4f85-a4c7-164bab9cb345" SourceId="1" SourceUrl="http://192.168.1.105:8000/Service/WiiService/mex" />
-    <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="e6516e62-b1d4-45fe-936c-02c8bff620d8" SourceId="1" SourceUrl="http://192.168.1.105:8000/Service/WiiService/mex" />
-    <MetadataFile FileName="WiimoteTest1.xsd" MetadataType="Schema" ID="6aa0381b-6508-4372-bdfa-02fcaa6a3af2" SourceId="1" SourceUrl="http://192.168.1.105:8000/Service/WiiService/mex" />
-    <MetadataFile FileName="WiimoteLib1.xsd" MetadataType="Schema" ID="9d2370a5-7646-44d7-bdb2-02896971a33f" SourceId="1" SourceUrl="http://192.168.1.105:8000/Service/WiiService/mex" />
+    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="445b2dfc-7a04-47ad-a49d-14ba3eebea2b" SourceId="1" SourceUrl="http://192.168.1.102:8000/Service/WiiService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="32fb27db-de18-4054-8694-e5b6a902629e" SourceId="1" SourceUrl="http://192.168.1.102:8000/Service/WiiService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="65ce26a1-496b-4a91-8a9b-979e6167d4fc" SourceId="1" SourceUrl="http://192.168.1.102:8000/Service/WiiService/mex" />
+    <MetadataFile FileName="WiimoteTest.xsd" MetadataType="Schema" ID="e50451a5-b1ad-4b45-902d-6d0da3d7430c" SourceId="1" SourceUrl="http://192.168.1.102:8000/Service/WiiService/mex" />
+    <MetadataFile FileName="WiimoteLib.xsd" MetadataType="Schema" ID="dbccde40-9318-4445-9951-9fb517a65dd6" SourceId="1" SourceUrl="http://192.168.1.102:8000/Service/WiiService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

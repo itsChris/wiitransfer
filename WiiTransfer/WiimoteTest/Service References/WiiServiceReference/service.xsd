@@ -25,30 +25,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="Calibrate">
+  <xs:element name="CheckWiimoteDataHash">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WiimoteTest" minOccurs="0" name="wiidata" nillable="true" type="q2:ArrayOfSignalSample" />
+        <xs:element minOccurs="0" name="data" nillable="true" type="xs:base64Binary" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CalibrateResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SendWiimoteDataasHash">
+  <xs:element name="CheckWiimoteDataHashResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="wiidata" nillable="true" type="xs:base64Binary" />
-        <xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
-        <xs:element minOccurs="0" name="length" type="xs:int" />
+        <xs:element minOccurs="0" name="CheckWiimoteDataHashResult" type="xs:boolean" />
       </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SendWiimoteDataasHashResponse">
-    <xs:complexType>
-      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>
