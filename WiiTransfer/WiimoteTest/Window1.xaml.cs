@@ -166,22 +166,51 @@ namespace WiimoteTest
 
                 sampleList1.Add(adjustedSample);
 
-                if(sampleList1.Count>3)
+                if(sampleList1.Count>8)
                 {
-                    if (sampleList1[sampleList1.Count - 1].Sample.X <= sampleList1[sampleList1.Count - 2].Sample.X && sampleList1[sampleList1.Count - 2].Sample.X >= sampleList1[sampleList1.Count - 3].Sample.X)
+                    int n = sampleList1.Count - 1;
+
+                    int check = 4;
+                    bool topChecks =true;
+                    bool bottomChecks =true;
+                    for (int i = 1; i<=check; i++)
                     {
-                        if (Math.Abs(sampleList1[sampleList1.Count - 2].Sample.X - 125) > 25)
+                        if(sampleList1[n-check+i].Sample.X<sampleList1[n-check].Sample.X)
                         {
-                            MarkTop(sampleList1[sampleList1.Count - 2], canvas1, Brushes.Brown);
+                            topChecks = false;
+                            
+                        }
+                         if(sampleList1[n-check-i].Sample.X<sampleList1[n-check].Sample.X)
+                        {
+                            topChecks = false;
+                            
+                        }
+
+                         if (sampleList1[n - check + i].Sample.X > sampleList1[n - check].Sample.X)
+                         {
+                             bottomChecks = false;
+
+                         }
+                         if (sampleList1[n - check - i].Sample.X > sampleList1[n - check].Sample.X)
+                         {
+                             bottomChecks = false;
+
+                         }
+                    }
+                    if (topChecks)
+                    {
+                        if (Math.Abs(sampleList1[n -check].Sample.X - 125) > 25)
+                        {
+                            MarkTop(sampleList1[n - check], canvas1, Brushes.Brown);
                             textBlock1.Text += "1";
                         }
                     }
 
-                    if (sampleList1[sampleList1.Count - 1].Sample.X >= sampleList1[sampleList1.Count - 2].Sample.X && sampleList1[sampleList1.Count - 2].Sample.X <= sampleList1[sampleList1.Count - 3].Sample.X)
+                    if (bottomChecks)
                     {
-                        if (Math.Abs(sampleList1[sampleList1.Count - 2].Sample.X - 125) > 25)
+                        if (Math.Abs(sampleList1[n - check].Sample.X - 125) > 25)
                         {
-                            MarkTop(sampleList1[sampleList1.Count - 2], canvas1, Brushes.Brown);
+                            MarkTop(sampleList1[n - check], canvas1, Brushes.BlueViolet);
                             textBlock1.Text += "0";
                         }
                     }
@@ -192,6 +221,8 @@ namespace WiimoteTest
                 }
 
             }
+
+            
 
            
 
