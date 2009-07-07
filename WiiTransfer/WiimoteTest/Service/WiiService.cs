@@ -23,15 +23,23 @@ namespace WiimoteTest.Service
 
         public bool CheckWiimoteDataHash(byte[] data)
         {
-            byte[] localdata = Encoding.ASCII.GetBytes(App.window.KeyCode.Substring(0,10));
+            byte[] localdata = Encoding.ASCII.GetBytes(App.window.variables.Code.Substring(0,10));
             byte[] localhash = new MD5CryptoServiceProvider().ComputeHash(localdata);
-            App.window.LastAcceptedPassword = App.window.KeyCode.Substring(0, 10);
+            
+            
             App.window.ClearCount();
 
             if(CompareHashes(localhash,data))
             {
-                //new WifiManager().ConnectToSecure("hello", App.window.LastAcceptedPassword);
+                App.window.variables.LastAcceptedPassword = App.window.variables.Code.Substring(0, 10);
+                App.window.variables.CodeStatus ="Verified";
             }
+            else
+            {
+                App.window.variables.LastAcceptedPassword = "";
+                App.window.variables.CodeStatus = "Not Verified";
+            }
+
             return CompareHashes(localhash, data);
             
         }

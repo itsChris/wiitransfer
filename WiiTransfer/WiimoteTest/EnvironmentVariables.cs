@@ -156,6 +156,20 @@ namespace WiimoteTest
             }
         }
 
+        string _lastPassword;
+        public string LastAcceptedPassword
+        {
+            get
+            {
+                return _lastPassword;
+            }
+            set
+            {
+                _lastPassword = value;
+                RaisePropertyChanged("LastAcceptedPassword");
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -85,18 +85,24 @@ namespace WiimoteTest
 
         public void UpdateStatuses()
         {
-           
+
         }
 
         void samplerTimer_Tick(object sender, EventArgs e)
         {
             if (countTops > 10)
             {
-                SendHash(variables.Code);
-                countTops = 0;
-                variables.Code = "";
+                //SendHash(variables.Code);
+                //ClearCount();
             }
 
+        }
+
+
+        public void ClearCount()
+        {
+            countTops = 0;
+            variables.Code = "";
         }
 
         void OnMatchingTimer(object sender, EventArgs e)
@@ -456,7 +462,7 @@ namespace WiimoteTest
         {
             if (e.Error == null)
             {
-               
+
                 if (e.Result == true)
                 {
                     variables.CodeStatus = "Verified";
