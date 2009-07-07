@@ -41,6 +41,18 @@ namespace WiimoteTest
             //connnotchanged = true;
         }
 
+        public string ConnectionStatus
+        {
+            get
+            {
+                string status = "";
+              status =  client.Interfaces[0].CurrentConnection.isState.ToString();
+              status += " Security:";
+              status +=  (client.Interfaces[0].CurrentConnection.wlanSecurityAttributes.securityEnabled) ? "on" : "off";
+              return status;
+            }
+        }
+
         public List<string> getAvailableNetworks(bool adhoc)
         {
             client.Interfaces[0].Scan();

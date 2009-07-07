@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace WiimoteTest
 {
-    class EnvironmentVariables: INotifyPropertyChanged
+    public class EnvironmentVariables: INotifyPropertyChanged
     {
 
         public EnvironmentVariables()
@@ -97,6 +97,62 @@ namespace WiimoteTest
             {
                 _signalZoom = value;
                 RaisePropertyChanged("SignalZoom");
+            }
+        }
+
+        string _connectionStatus;
+        public string ConnectionStatus
+        {
+            get
+            {
+                return _connectionStatus;
+            }
+            set
+            {
+                _connectionStatus = value;
+                RaisePropertyChanged("ConnectionStatus");
+            }
+        }
+
+        string _currentIP;
+        public string CurrentIP
+        {
+            get
+            {
+                return _currentIP;
+            }
+            set
+            {
+                _currentIP = value;
+                RaisePropertyChanged("CurrentIP");
+            }
+        }
+
+        string _codeStatus;
+        public string CodeStatus
+        {
+            get
+            {
+                return _codeStatus;
+            }
+            set
+            {
+                _codeStatus = value;
+                RaisePropertyChanged("CodeStatus");
+            }
+        }
+
+        string _code;
+        public string Code
+        {
+            get
+            {
+                return _code;
+            }
+            set
+            {
+                _code = value;
+                RaisePropertyChanged("Code");
             }
         }
 

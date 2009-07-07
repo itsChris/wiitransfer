@@ -97,11 +97,26 @@ namespace WiimoteTest.WiiServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/SendWiimoteData", ReplyAction="http://tempuri.org/IWiiService/SendWiimoteDataResponse")]
         void SendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IWiiService/SendWiimoteData", ReplyAction="http://tempuri.org/IWiiService/SendWiimoteDataResponse")]
+        System.IAsyncResult BeginSendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata, System.AsyncCallback callback, object asyncState);
+        
+        void EndSendWiimoteData(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/GetServerTime", ReplyAction="http://tempuri.org/IWiiService/GetServerTimeResponse")]
         System.DateTime GetServerTime();
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IWiiService/GetServerTime", ReplyAction="http://tempuri.org/IWiiService/GetServerTimeResponse")]
+        System.IAsyncResult BeginGetServerTime(System.AsyncCallback callback, object asyncState);
+        
+        System.DateTime EndGetServerTime(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWiiService/CheckWiimoteDataHash", ReplyAction="http://tempuri.org/IWiiService/CheckWiimoteDataHashResponse")]
         bool CheckWiimoteDataHash(byte[] data);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IWiiService/CheckWiimoteDataHash", ReplyAction="http://tempuri.org/IWiiService/CheckWiimoteDataHashResponse")]
+        System.IAsyncResult BeginCheckWiimoteDataHash(byte[] data, System.AsyncCallback callback, object asyncState);
+        
+        bool EndCheckWiimoteDataHash(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -110,7 +125,63 @@ namespace WiimoteTest.WiiServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+    public partial class GetServerTimeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetServerTimeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.DateTime Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.DateTime)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+    public partial class CheckWiimoteDataHashCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public CheckWiimoteDataHashCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public bool Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public partial class WiiServiceClient : System.ServiceModel.ClientBase<WiimoteTest.WiiServiceReference.IWiiService>, WiimoteTest.WiiServiceReference.IWiiService {
+        
+        private BeginOperationDelegate onBeginSendWiimoteDataDelegate;
+        
+        private EndOperationDelegate onEndSendWiimoteDataDelegate;
+        
+        private System.Threading.SendOrPostCallback onSendWiimoteDataCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetServerTimeDelegate;
+        
+        private EndOperationDelegate onEndGetServerTimeDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetServerTimeCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginCheckWiimoteDataHashDelegate;
+        
+        private EndOperationDelegate onEndCheckWiimoteDataHashDelegate;
+        
+        private System.Threading.SendOrPostCallback onCheckWiimoteDataHashCompletedDelegate;
         
         public WiiServiceClient() {
         }
@@ -131,16 +202,157 @@ namespace WiimoteTest.WiiServiceReference {
                 base(binding, remoteAddress) {
         }
         
+        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> SendWiimoteDataCompleted;
+        
+        public event System.EventHandler<GetServerTimeCompletedEventArgs> GetServerTimeCompleted;
+        
+        public event System.EventHandler<CheckWiimoteDataHashCompletedEventArgs> CheckWiimoteDataHashCompleted;
+        
         public void SendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata) {
             base.Channel.SendWiimoteData(wiidata);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.IAsyncResult BeginSendWiimoteData(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginSendWiimoteData(wiidata, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public void EndSendWiimoteData(System.IAsyncResult result) {
+            base.Channel.EndSendWiimoteData(result);
+        }
+        
+        private System.IAsyncResult OnBeginSendWiimoteData(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata = ((System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample>)(inValues[0]));
+            return this.BeginSendWiimoteData(wiidata, callback, asyncState);
+        }
+        
+        private object[] OnEndSendWiimoteData(System.IAsyncResult result) {
+            this.EndSendWiimoteData(result);
+            return null;
+        }
+        
+        private void OnSendWiimoteDataCompleted(object state) {
+            if ((this.SendWiimoteDataCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.SendWiimoteDataCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void SendWiimoteDataAsync(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata) {
+            this.SendWiimoteDataAsync(wiidata, null);
+        }
+        
+        public void SendWiimoteDataAsync(System.Collections.Generic.List<WiimoteTest.WiiServiceReference.SignalSample> wiidata, object userState) {
+            if ((this.onBeginSendWiimoteDataDelegate == null)) {
+                this.onBeginSendWiimoteDataDelegate = new BeginOperationDelegate(this.OnBeginSendWiimoteData);
+            }
+            if ((this.onEndSendWiimoteDataDelegate == null)) {
+                this.onEndSendWiimoteDataDelegate = new EndOperationDelegate(this.OnEndSendWiimoteData);
+            }
+            if ((this.onSendWiimoteDataCompletedDelegate == null)) {
+                this.onSendWiimoteDataCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnSendWiimoteDataCompleted);
+            }
+            base.InvokeAsync(this.onBeginSendWiimoteDataDelegate, new object[] {
+                        wiidata}, this.onEndSendWiimoteDataDelegate, this.onSendWiimoteDataCompletedDelegate, userState);
         }
         
         public System.DateTime GetServerTime() {
             return base.Channel.GetServerTime();
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.IAsyncResult BeginGetServerTime(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetServerTime(callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.DateTime EndGetServerTime(System.IAsyncResult result) {
+            return base.Channel.EndGetServerTime(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetServerTime(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return this.BeginGetServerTime(callback, asyncState);
+        }
+        
+        private object[] OnEndGetServerTime(System.IAsyncResult result) {
+            System.DateTime retVal = this.EndGetServerTime(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetServerTimeCompleted(object state) {
+            if ((this.GetServerTimeCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetServerTimeCompleted(this, new GetServerTimeCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetServerTimeAsync() {
+            this.GetServerTimeAsync(null);
+        }
+        
+        public void GetServerTimeAsync(object userState) {
+            if ((this.onBeginGetServerTimeDelegate == null)) {
+                this.onBeginGetServerTimeDelegate = new BeginOperationDelegate(this.OnBeginGetServerTime);
+            }
+            if ((this.onEndGetServerTimeDelegate == null)) {
+                this.onEndGetServerTimeDelegate = new EndOperationDelegate(this.OnEndGetServerTime);
+            }
+            if ((this.onGetServerTimeCompletedDelegate == null)) {
+                this.onGetServerTimeCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetServerTimeCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetServerTimeDelegate, null, this.onEndGetServerTimeDelegate, this.onGetServerTimeCompletedDelegate, userState);
+        }
+        
         public bool CheckWiimoteDataHash(byte[] data) {
             return base.Channel.CheckWiimoteDataHash(data);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public System.IAsyncResult BeginCheckWiimoteDataHash(byte[] data, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginCheckWiimoteDataHash(data, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        public bool EndCheckWiimoteDataHash(System.IAsyncResult result) {
+            return base.Channel.EndCheckWiimoteDataHash(result);
+        }
+        
+        private System.IAsyncResult OnBeginCheckWiimoteDataHash(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            byte[] data = ((byte[])(inValues[0]));
+            return this.BeginCheckWiimoteDataHash(data, callback, asyncState);
+        }
+        
+        private object[] OnEndCheckWiimoteDataHash(System.IAsyncResult result) {
+            bool retVal = this.EndCheckWiimoteDataHash(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnCheckWiimoteDataHashCompleted(object state) {
+            if ((this.CheckWiimoteDataHashCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.CheckWiimoteDataHashCompleted(this, new CheckWiimoteDataHashCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void CheckWiimoteDataHashAsync(byte[] data) {
+            this.CheckWiimoteDataHashAsync(data, null);
+        }
+        
+        public void CheckWiimoteDataHashAsync(byte[] data, object userState) {
+            if ((this.onBeginCheckWiimoteDataHashDelegate == null)) {
+                this.onBeginCheckWiimoteDataHashDelegate = new BeginOperationDelegate(this.OnBeginCheckWiimoteDataHash);
+            }
+            if ((this.onEndCheckWiimoteDataHashDelegate == null)) {
+                this.onEndCheckWiimoteDataHashDelegate = new EndOperationDelegate(this.OnEndCheckWiimoteDataHash);
+            }
+            if ((this.onCheckWiimoteDataHashCompletedDelegate == null)) {
+                this.onCheckWiimoteDataHashCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnCheckWiimoteDataHashCompleted);
+            }
+            base.InvokeAsync(this.onBeginCheckWiimoteDataHashDelegate, new object[] {
+                        data}, this.onEndCheckWiimoteDataHashDelegate, this.onCheckWiimoteDataHashCompletedDelegate, userState);
         }
     }
 }

@@ -102,6 +102,8 @@ namespace WiimoteTest
 			gateways = null;
 			dnses = null;
 
+            
+
 
             foreach (Win32_NetworkAdapterConfiguration netconfig in networkCollection)
             {

@@ -10,101 +10,74 @@
         <!--<ProgressBar Height="19" Margin="46,0,0,0" Name="progressBar1" VerticalAlignment="Top" Maximum="1" Minimum="-1" />
         <ProgressBar Margin="46,25,0,0" Name="progressBar2" Maximum="1" Minimum="-1" Height="19" VerticalAlignment="Top" />
         <ProgressBar Height="21" Margin="46,50,0,0" Name="progressBar3" VerticalAlignment="Top" Maximum="1" Minimum="-1" />-->
-    	<Grid HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Top" Width="Auto" Height="Auto" Grid.Column="0" d:LayoutOverrides="Height">
-    		<Grid.RowDefinitions>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    		</Grid.RowDefinitions>
-    		<Grid.ColumnDefinitions>
-    			<ColumnDefinition/>
-    			<ColumnDefinition Width="75"/>
-    			<ColumnDefinition Width="75"/>
-    		</Grid.ColumnDefinitions>
-    		<Label Margin="0,0,0,0" Content="W2-W1" d:LayoutOverrides="Width, Height"/>
-       
-    		<Label x:Name="label1" Content="Label" Grid.Column="1" d:LayoutOverrides="GridBox"/>
-    		<Label Margin="0,0,0,0" Content="W1" Grid.Row="1" d:LayoutOverrides="Width, Height"/>
-    		<Label Margin="0,0,0,0" x:Name="label2" Content="Label" Grid.Column="1" Grid.Row="1" d:LayoutOverrides="GridBox"/>
-    		<Label Margin="0,0,0,0" x:Name="label6" Content="Label" Grid.Column="3" Grid.Row="1"/>
-    		<Label Margin="0,0,0,0" Content="W2" Grid.Row="2" d:LayoutOverrides="Width, Height"/>
-    		<Label x:Name="label3" Height="Auto" VerticalAlignment="Top" Content="Label" Grid.Column="1" Grid.Row="2" d:LayoutOverrides="GridBox"/>
-    		<Label Margin="0,0,0,0" x:Name="label7" Content="Label" Grid.Column="2" Grid.Row="2"/>
-    		<Label Margin="0,0,0,0" Content="Samples" Grid.Row="3" d:LayoutOverrides="Width, Height"/>
-    		<Label Height="28" Margin="0,0,0,0" x:Name="label8" VerticalAlignment="Top" Content="Label" Grid.Column="1" Grid.Row="3"/>
-    		<Label Margin="0,0,0,0" Content="Match Rate" Grid.Column="0" Grid.Row="4" d:LayoutOverrides="Width, Height"/>
-    		<Label Margin="0,0,0,0" x:Name="lblMedDif" Content="Label" Grid.Column="1" Grid.Row="4"/>
-    		<Label x:Name="label9" Margin="0,0,0,0" Width="Auto" Height="Auto" Content="Label" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="5"/>
-    		<Label x:Name="lblLast100" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Label" Grid.Column="1" Grid.Row="6"/>
-        	<Button Height="23" Margin="0,0,0,0" x:Name="button3" VerticalAlignment="Top" Click="OnConnectWiimotes" Content="Reconnect" Grid.ColumnSpan="1" Grid.Row="8" Grid.RowSpan="1"/>
-        	<Button Height="23" Margin="0,0,0,0" x:Name="btnReset" VerticalAlignment="Top" Click="btnReset_Click" Content="Reset" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="8" Grid.RowSpan="1"/>
-    		<ToggleButton HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="button1" Width="Auto" IsChecked="{Binding Path=Running,Mode=TwoWay}" Content="Running" VerticalAlignment="Top" Grid.Column="2" Grid.Row="8"/>
-    	</Grid>
-        <Grid HorizontalAlignment="Left" Margin="0,225,0,0" Width="Auto" Height="Auto" Grid.Column="0" d:LayoutOverrides="Height" VerticalAlignment="Top">
-    		<Grid.RowDefinitions>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    			<RowDefinition/>
-    		</Grid.RowDefinitions>
-    		<Grid.ColumnDefinitions>
-    			<ColumnDefinition Width="Auto"/>
-    			<ColumnDefinition Width="Auto" MinWidth="70"/>
-    			<ColumnDefinition Width="Auto" MaxWidth="Infinity" MinWidth="0"/>
-    		</Grid.ColumnDefinitions>
-    		
-    		<Label Margin="0,0,0,0" Content="Signal Zoom" d:LayoutOverrides="Width, Height"/>
-    		<Label Height="Auto" Margin="0,0,0,0" x:Name="label5" VerticalAlignment="Top" Content="{Binding Path=SignalZoom, Mode=TwoWay}" ContentStringFormat="N2" Grid.Column="1"/>
-    		<Slider Height="Auto" Margin="0,0,0,0" Minimum="0.1" x:Name="signalzoom" Value="{Binding Path=SignalZoom, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Stretch"  Maximum="50" Width="Auto" Grid.Column="2" />
-    		
+        <Grid HorizontalAlignment="Left" Margin="12,8.163,0,0" Width="276.059" Height="134.728" d:LayoutOverrides="Height" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                <ColumnDefinition Width="Auto" MaxWidth="Infinity" MinWidth="0"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Margin="0,0,0,0" Content="Signal Zoom" d:LayoutOverrides="Width, Height"/>
+            <Label Height="Auto" Margin="0,0,0,0" x:Name="label5" VerticalAlignment="Top" Content="{Binding Path=SignalZoom, Mode=TwoWay}" ContentStringFormat="N2" Grid.Column="1"/>
+            <Slider Height="Auto" Margin="0,0,0,0" Minimum="0.1" x:Name="signalzoom" Value="{Binding Path=SignalZoom, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Stretch"  Maximum="50" Width="Auto" Grid.Column="2" />
+
             <Label Margin="0,0,0,1.232" Content="Time Zoom" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="1"/>
             <Label Height="Auto" x:Name="label4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ContentStringFormat="N2" Width="Auto" Content="{Binding Path=TimeZoom, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"/>
-    		<Slider Height="22" x:Name="sliderTimeZoom" VerticalAlignment="Top" Minimum="30" Maximum="140" Value="{Binding Path=TimeZoom, Mode=TwoWay}" Width="Auto" HorizontalAlignment="Stretch"  Grid.Column="2" Grid.Row="1" />
-    		
-    		<Label Margin="0,0,0,1.232" Content="Signal Adjust" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="2"/>
-    		<Label Height="Auto" x:Name="lblSignalAdjustment" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=SignalAdjustment, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
-    		<Slider Height="22" HorizontalAlignment="Left" x:Name="sliderSignalAdjustment" VerticalAlignment="Top" Width="126.959"  Value="{Binding Path=SignalAdjustment, Mode=TwoWay}"  Minimum="-10" Grid.Column="2" Grid.Row="2" SmallChange="0.5" />
-    		
-    		<Label Margin="0,0,0,1.232" Content="Epsilon Max" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="3"/>
-    		<Label Height="Auto" x:Name="lblEpsilonMax" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=EpsilonMaxim, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"/>
-    		<Slider Height="22" HorizontalAlignment="Left" Minimum="0" x:Name="slideEpsilonMax" VerticalAlignment="Top" Width="126.959" Value="{Binding Path=EpsilonMaxim, Mode=TwoWay}" Maximum="20" SmallChange="1" Grid.Column="2" Grid.Row="3" />
-    		
-    		<Label Margin="0,0,0,1.232" Content="Scale" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="4"/>
-    		<Label Height="Auto" x:Name="lblScaleAdjustment" ContentStringFormat="N2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=ScaleAdjustment, Mode=TwoWay}" Grid.Column="1" Grid.Row="4"/>
-    		<Slider Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" SmallChange="0.01" Maximum="1.2"  Value="{Binding Path=ScaleAdjustment, Mode=TwoWay}" Minimum="0.8" Grid.Column="2" Grid.Row="4" />
-    	</Grid>
-    	    
-    		<!--<ProgressBar Height="19" Margin="46,0,0,0" Name="progressBar1" VerticalAlignment="Top" Maximum="1" Minimum="-1" />
+            <Slider Height="22" x:Name="sliderTimeZoom" VerticalAlignment="Top" Minimum="30" Maximum="140" Value="{Binding Path=TimeZoom, Mode=TwoWay}" Width="Auto" HorizontalAlignment="Stretch"  Grid.Column="2" Grid.Row="1" />
+
+            <Label Margin="0,0,0,1.232" Content="Signal Adjust" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="2"/>
+            <Label Height="Auto" x:Name="lblSignalAdjustment" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=SignalAdjustment, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
+            <Slider Height="22" HorizontalAlignment="Left" x:Name="sliderSignalAdjustment" VerticalAlignment="Top" Width="126.959"  Value="{Binding Path=SignalAdjustment, Mode=TwoWay}"  Minimum="-10" Grid.Column="2" Grid.Row="2" SmallChange="0.5" />
+
+            <Label Margin="0,0,0,1.232" Content="Epsilon Max" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="3"/>
+            <Label Height="Auto" x:Name="lblEpsilonMax" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=EpsilonMaxim, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"/>
+            <Slider Height="22" HorizontalAlignment="Left" Minimum="0" x:Name="slideEpsilonMax" VerticalAlignment="Top" Width="126.959" Value="{Binding Path=EpsilonMaxim, Mode=TwoWay}" Maximum="20" SmallChange="1" Grid.Column="2" Grid.Row="3" />
+
+            <Label Margin="0,0,0,1.232" Content="Scale" d:LayoutOverrides="Width, Height" Grid.Column="0" Grid.Row="4"/>
+            <Label Height="Auto" x:Name="lblScaleAdjustment" ContentStringFormat="N2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Content="{Binding Path=ScaleAdjustment, Mode=TwoWay}" Grid.Column="1" Grid.Row="4"/>
+            <Slider Height="Auto" Margin="0,0,0,0" VerticalAlignment="Top" SmallChange="0.01" Maximum="1.2"  Value="{Binding Path=ScaleAdjustment, Mode=TwoWay}" Minimum="0.8" Grid.Column="2" Grid.Row="4" />
+        </Grid>
+
+        <!--<ProgressBar Height="19" Margin="46,0,0,0" Name="progressBar1" VerticalAlignment="Top" Maximum="1" Minimum="-1" />
         <ProgressBar Margin="46,25,0,0" Name="progressBar2" Maximum="1" Minimum="-1" Height="19" VerticalAlignment="Top" />
         <ProgressBar Height="21" Margin="46,50,0,0" Name="progressBar3" VerticalAlignment="Top" Maximum="1" Minimum="-1" />-->
         <ScrollViewer Grid.Column="1" MaxWidth="800" HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Left" Margin="0,0,0,253" Width="800">
-    		<Canvas x:Name="canvas1" Height="400" Width="9000" Grid.Column="1"/>
-    		</ScrollViewer>
-        <Button Grid.Column="0" Height="23" HorizontalAlignment="Left" Margin="235,1.48,0,0" Name="button4" VerticalAlignment="Top" Width="85" Click="button4_Click">Create Service</Button>
-        <Button Grid.Column="0" Height="23" HorizontalAlignment="Left" Margin="234,30,0,0" Name="button5" VerticalAlignment="Top" Width="85" Click="button5_Click">Send</Button>
-        <ListBox VerticalAlignment="Bottom" Height="125.272" IsSynchronizedWithCurrentItem="True" Margin="8,0,8,8" SelectionChanged="WiimoteList_SelectionChanged" Name="WiimoteList"/>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,59,1,0" Name="button2" VerticalAlignment="Top" Width="85" Click="button2_Click">Sync Time</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,88,0,0" Name="btnCalibrate" VerticalAlignment="Top" Width="86" Click="btnCalibrate_Click">Calibrate</Button>
-        <ListBox Grid.Column="1"  Height="135" HorizontalAlignment="Left" Margin="15,0,0,88" Name="lbNetworks" VerticalAlignment="Bottom" Width="212" />
-        <Label Grid.Column="1" Height="39.152" HorizontalAlignment="Left" Margin="15,261,0,0" Name="label10" VerticalAlignment="Top" Width="168">Available ad-hoc networks</Label>
-        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="144,0,0,28" Name="btnCreate" VerticalAlignment="Bottom" Width="83" Click="btnCreate_Click">Create</Button>
-        <Button Height="23" Margin="0,0,635,57" Name="btnRefresh" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" Width="61" Click="btnRefresh_Click">Refresh</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,573,57" Name="btnConnect" VerticalAlignment="Bottom" Width="56" Grid.Column="1" Click="button7_Click">Connect</Button>
-        <TextBox Grid.Column="1" Height="24" HorizontalAlignment="Left" Margin="57,0,0,28" Name="txtNetworkName" VerticalAlignment="Bottom" Width="80" />
-        <Label Grid.Column="1" Height="24" HorizontalAlignment="Left" Margin="15,0,0,28" Name="label11" VerticalAlignment="Bottom" Width="41">Name</Label>
-        <Button Height="23" HorizontalAlignment="Left" Margin="15,0,0,58" Name="btnDisconnect" VerticalAlignment="Bottom" Width="83" Grid.Column="1" Click="btnDisconnect_Click">Disconnect</Button>
-        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="245,0,0,200" Name="btnServerIP" VerticalAlignment="Bottom" Width="75" Click="button6_Click">Set Server IP</Button>
-        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="245,0,0,171" Name="btnClientIP" VerticalAlignment="Bottom" Width="75" Click="btnClientIP_Click">Set Client IP</Button>
-        <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="245,0,0,142" Name="btnSerDHCP" VerticalAlignment="Bottom" Width="75" Click="btnSerDHCP_Click">SetDHCP</Button>
-        <Label Height="24" HorizontalAlignment="Left" Margin="15,0,0,8" Name="label12" VerticalAlignment="Bottom" Width="41" Grid.Column="1">Pass
+            <Canvas x:Name="canvas1" Height="400" Width="9000" Grid.Column="1"/>
+        </ScrollViewer>
+        <Button Height="23" HorizontalAlignment="Left" Margin="51,0,0,214" Name="button4" VerticalAlignment="Bottom" Width="85" Click="button4_Click" Grid.Column="1">Create Service</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="51,0,0,185" Name="button5" VerticalAlignment="Bottom" Width="85" Click="button5_Click" Grid.Column="1">Send</Button>
+        <ListBox IsSynchronizedWithCurrentItem="True" Margin="10,149,0,0" SelectionChanged="WiimoteList_SelectionChanged" Name="WiimoteList" HorizontalAlignment="Left" Width="278.059" Height="64" VerticalAlignment="Top" />
+        <Button Height="23" HorizontalAlignment="Left" Margin="51,0,0,156" Name="button2" VerticalAlignment="Bottom" Width="85" Click="button2_Click" Grid.Column="1">Sync Time</Button>
+        <Button HorizontalAlignment="Left" Margin="50,0,0,127" Name="btnCalibrate" Width="86" Click="btnCalibrate_Click" Grid.Column="1" Height="23" VerticalAlignment="Bottom">Calibrate</Button>
+        <ListBox HorizontalAlignment="Left" Margin="10,253,0,122" Name="lbNetworks" Width="212" />
+        <Label HorizontalAlignment="Left" Margin="10,228,0,243" Name="label10" Width="168">Available ad-hoc networks</Label>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,5,61.52" Name="btnCreate" VerticalAlignment="Bottom" Width="83" Click="btnCreate_Click">Create</Button>
+        <Button Height="23" Margin="99,0,0,91" Name="btnRefresh" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="61" Click="btnRefresh_Click">Refresh</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,98,91" Name="btnConnect" VerticalAlignment="Bottom" Width="56" Click="button7_Click">Connect</Button>
+        <TextBox Height="24" HorizontalAlignment="Left" Margin="52,0,0,62" Name="txtNetworkName" VerticalAlignment="Bottom" Width="174" />
+        <Label Height="24" HorizontalAlignment="Left" Margin="8,0,0,60" Name="label11" VerticalAlignment="Bottom" Width="41">Name</Label>
+        <Button Height="23" HorizontalAlignment="Left" Margin="10,0,0,92" Name="btnDisconnect" VerticalAlignment="Bottom" Width="83" Click="btnDisconnect_Click">Disconnect</Button>
+        <Button HorizontalAlignment="Right" Margin="0,253,5,234" Name="btnServerIP" Width="75" Click="button6_Click">Set Server IP</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,5,205" Name="btnClientIP" VerticalAlignment="Bottom" Width="75" Click="btnClientIP_Click">Set Client IP</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,5,176" Name="btnSerDHCP" VerticalAlignment="Bottom" Width="75" Click="btnSerDHCP_Click">SetDHCP</Button>
+        <Label Height="24" HorizontalAlignment="Left" Margin="10,0,0,32" Name="label12" VerticalAlignment="Bottom" Width="41">Pass
         </Label>
-        <PasswordBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="57,0,0,8" Name="txtPassword" VerticalAlignment="Bottom" Width="81" />
-        <TextBlock Grid.Column="1" Height="135" HorizontalAlignment="Left" Margin="359,0,0,88" Name="textBlock1" VerticalAlignment="Bottom" Width="429" TextWrapping="Wrap" />
+        <PasswordBox Height="23" HorizontalAlignment="Left" Margin="52,0,0,34" Name="txtPassword" VerticalAlignment="Bottom" Width="174" />
+        <Border BorderBrush="Black" BorderThickness="0.5"></Border>
+        <TextBlock Grid.Column="1" Height="32" Background="Gainsboro"  Text="{Binding Path=Code}"  HorizontalAlignment="Left" Margin="313,0,0,205" Name="txtCode" VerticalAlignment="Bottom" Width="232" TextWrapping="Wrap" />
+        <Label Height="28" Name="label1" Width="61" Grid.Column="1" HorizontalAlignment="Left" Margin="259,0,0,205" VerticalAlignment="Bottom">Code</Label>
+        <Label Height="28" HorizontalAlignment="Left" Margin="228,0,0,171" Name="label2" VerticalAlignment="Bottom" Width="80" Grid.Column="1">Code status</Label>
+        <TextBlock Background="Gainsboro" Height="32" HorizontalAlignment="Left" Margin="313,0,0,167" Text="{Binding Path=CodeStatus}" Name="textBlock2" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="232" Grid.Column="1" />
+        <Label Height="28" HorizontalAlignment="Left" Margin="197,0,0,129" Name="label3" VerticalAlignment="Bottom" Width="110" Grid.Column="1">Connection status</Label>
+        <TextBlock Background="Gainsboro" Height="32" HorizontalAlignment="Left" Margin="313,0,0,129" Text="{Binding Path=ConnectionStatus}" Name="textBlock3" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="232" Grid.Column="1" />
+        <TextBlock Background="Gainsboro" Height="32" HorizontalAlignment="Left" Margin="313,0,0,91" Text="{Binding Path=CurrentIP}" Name="textBlock4" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="232" Grid.Column="1" />
+        <Label Height="28" HorizontalAlignment="Left" Margin="234,0,0,95" Name="label6" VerticalAlignment="Bottom" Width="73" Grid.Column="1">Current IP</Label>
     </Grid>
 </Window>

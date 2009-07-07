@@ -7,14 +7,22 @@ namespace WiimoteTest
 {
     class NetworkManager
     {
-        public void GetIP(string InterfaceDescription)
+        public string GetIP(string InterfaceDescription)
         {
             string[] ipadresses = new string[200];
             string[] subnets = new string[200];
             string[] gateways = new string[200];
             string[] dns = new string[200];
             WMIHelper.GetIP(InterfaceDescription, out ipadresses, out subnets, out gateways, out dns);
+            if (ipadresses!=null && ipadresses.Count() > 0)
+                return ipadresses[0];
+            else
+                return "";
+            
+            
         }
+
+
 
         public void SetIP(string InterfaceDescription,string ip,string mask)
         {
