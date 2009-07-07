@@ -88,12 +88,15 @@ namespace WiimoteTest
 
         }
 
+        string sentCode = "";
+
         void samplerTimer_Tick(object sender, EventArgs e)
         {
             if (countTops > 10)
             {
-                //SendHash(variables.Code);
-                //ClearCount();
+                sentCode = variables.Code;
+                SendHash(variables.Code);
+                ClearCount();
             }
 
         }
@@ -466,7 +469,7 @@ namespace WiimoteTest
                 if (e.Result == true)
                 {
                     variables.CodeStatus = "Verified";
-                    variables.LastAcceptedPassword = variables.Code;
+                    variables.LastAcceptedPassword = sentCode;
                 }
                 if (e.Result == false)
                 {
@@ -586,12 +589,21 @@ namespace WiimoteTest
         {
             string currentlyConnectedTo = wifiManager.CurrentlyConnectedTo;
             wifiManager.Disconnect();
+            Thread.Sleep(1000);
             wifiManager.ConnectToSecure(currentlyConnectedTo, variables.LastAcceptedPassword);
         }
 
         private void btnClearCode_Click(object sender, RoutedEventArgs e)
         {
             this.ClearCount();
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            string currentlyConnectedTo = wifiManager.CurrentlyConnectedTo;
+            wifiManager.Disconnect();
+            Thread.Sleep(1000);
+            wifiManager.CreateSecureAndConnect(currentlyConnectedTo, variables.LastAcceptedPassword);
         }
 
     }
