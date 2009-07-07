@@ -32,7 +32,7 @@ namespace WiimoteTest
                 //                            new WSHttpBinding() { MaxReceivedMessageSize=2147483647, MaxBufferPoolSize=2147483647}, 
                 //                           "WiiService");
 
-                //selfHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
+                //selfHost.Authorization.PrincipalPermissio nMode = PrincipalPermissionMode.None;
                 //ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 //smb.HttpGetEnabled = true;
                 //selfHost.Description.Behaviors.Add(smb);
