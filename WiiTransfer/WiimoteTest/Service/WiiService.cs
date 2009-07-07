@@ -27,7 +27,7 @@ namespace WiimoteTest.Service
             byte[] localhash = new MD5CryptoServiceProvider().ComputeHash(localdata);
             
             
-            App.window.ClearCount();
+           
 
             if(CompareHashes(localhash,data))
             {
@@ -39,6 +39,7 @@ namespace WiimoteTest.Service
                 App.window.variables.LastAcceptedPassword = "";
                 App.window.variables.CodeStatus = "Not Verified";
             }
+            App.window.ClearCount();
 
             return CompareHashes(localhash, data);
             
