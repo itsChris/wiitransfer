@@ -92,8 +92,8 @@ namespace WiimoteTest
         {
             if (countTops > 10)
             {
-                SendHash(variables.Code);
-                ClearCount();
+                //SendHash(variables.Code);
+                //ClearCount();
             }
 
         }
