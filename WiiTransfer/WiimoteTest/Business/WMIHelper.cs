@@ -71,7 +71,7 @@ namespace WiimoteTest
                        netconfig.SetGateways(null, null);
                        netconfig.SetDNSServerSearchOrder(null);
                        //netconfig.SetGateways(new string[] { "192.168.2.2" }, new ushort[] { 1 });
-                       netconfig.SetDNSServerSearchOrder(new string[] { "205.34.23.12" });
+                       //netconfig.SetDNSServerSearchOrder(new string[] { "205.34.23.12" });
                        // netconfig.EnableDHCP();
                        // netconfig.SetDNSServerSearchOrder(null);
 					    

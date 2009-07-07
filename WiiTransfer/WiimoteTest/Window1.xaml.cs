@@ -92,8 +92,8 @@ namespace WiimoteTest
         {
             if (countTops > 10)
             {
-                //SendHash(variables.Code);
-                //ClearCount();
+                SendHash(variables.Code);
+                ClearCount();
             }
 
         }
@@ -578,6 +578,17 @@ namespace WiimoteTest
         private void btnSerDHCP_Click(object sender, RoutedEventArgs e)
         {
             netManager.SetAutoIp(wifiManager.InterfaceDescription);
+        }
+
+        private void btnConnectUsingCode_Click(object sender, RoutedEventArgs e)
+        {
+            wifiManager.Disconnect();
+            wifiManager.ConnectToSecure(wifiManager.CurrentlyConnectedTo, variables.LastAcceptedPassword);
+        }
+
+        private void btnClearCode_Click(object sender, RoutedEventArgs e)
+        {
+            this.ClearCount();
         }
 
     }

@@ -53,6 +53,20 @@ namespace WiimoteTest
             }
         }
 
+        public string CurrentlyConnectedTo
+        {
+            get
+            {
+                if (client.Interfaces[0].CurrentConnection.isState == Wlan.WlanInterfaceState.Connected || client.Interfaces[0].CurrentConnection.isState == Wlan.WlanInterfaceState.AdHocNetworkFormed)
+                {
+                    return client.Interfaces[0].CurrentConnection.profileName;
+                }
+                else
+
+                    return "";
+            }
+        }
+
         public List<string> getAvailableNetworks(bool adhoc)
         {
             client.Interfaces[0].Scan();
@@ -76,7 +90,7 @@ namespace WiimoteTest
             client.Interfaces[0].Scan();
         }
 
-        private string CurrentlyConnectedTo = "";
+        
         public void Connect(string Name)
         {
             Wlan.Dot11Ssid ssid = (from net in networks
@@ -127,7 +141,7 @@ namespace WiimoteTest
             client.Interfaces[0].SetProfile(Wlan.WlanProfileFlags.AllUser, openProfileXml, true);
 
             client.Interfaces[0].Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Independent, profileName);
-            CurrentlyConnectedTo = profileName;
+           
 
         }
 
@@ -145,7 +159,6 @@ namespace WiimoteTest
             client.Interfaces[0].SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
 
             client.Interfaces[0].Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Independent, profileName);
-            CurrentlyConnectedTo = profileName;
         }
 
         public void Disconnect()
@@ -154,7 +167,6 @@ namespace WiimoteTest
             if (CurrentlyConnectedTo != "")
             {
                 client.Interfaces[0].DeleteProfile(CurrentlyConnectedTo);
-                CurrentlyConnectedTo = "";
             }
         }
 

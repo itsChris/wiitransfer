@@ -79,5 +79,7 @@
         <TextBlock Background="Gainsboro" Height="32" HorizontalAlignment="Left" Margin="313,0,0,129" Text="{Binding Path=ConnectionStatus}" Name="textBlock3" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="232" Grid.Column="1" />
         <TextBlock Background="Gainsboro" Height="32" HorizontalAlignment="Left" Margin="313,0,0,91" Text="{Binding Path=CurrentIP}" Name="textBlock4" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="232" Grid.Column="1" />
         <Label Height="28" HorizontalAlignment="Left" Margin="234,0,0,95" Name="label6" VerticalAlignment="Bottom" Width="73" Grid.Column="1">Current IP</Label>
+        <Button Grid.Column="1" Height="23" HorizontalAlignment="Right" Margin="0,0,51,171" Name="btnConnectUsingCode" VerticalAlignment="Bottom" Width="198" Click="btnConnectUsingCode_Click">Connect Using Last Verified Code</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,174,208.52" Name="btnClearCode" VerticalAlignment="Bottom" Width="75" Grid.Column="1" Click="btnClearCode_Click">Clear Code</Button>
     </Grid>
 </Window>
