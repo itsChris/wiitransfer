@@ -29,14 +29,14 @@ namespace WiimoteTest
         }
         void wlanIface_WlanNotification(Wlan.WlanNotificationData notifyData)
         {
-          
+
             //notification = notifyData.NotificationCode.ToString();
             //notchanged = true;
         }
 
         void wlanIface_WlanConnectionNotification(Wlan.WlanNotificationData notifyData, Wlan.WlanConnectionNotificationData connNotifyData)
         {
-         
+
             //connnotification = notifyData.NotificationCode.ToString();
             //connnotchanged = true;
         }
@@ -46,9 +46,14 @@ namespace WiimoteTest
             get
             {
                 string status = "";
-              status =  client.Interfaces[0].CurrentConnection.isState.ToString();
-              status += " Security:";
-              status +=  (client.Interfaces[0].CurrentConnection.wlanSecurityAttributes.securityEnabled) ? "on" : "off";
+                if (client.Interfaces[0].InterfaceState == Wlan.WlanInterfaceState.Connected)
+                {
+                    status = client.Interfaces[0].CurrentConnection.isState.ToString();
+                    status += " Security:";
+                    status += (client.Interfaces[0].CurrentConnection.wlanSecurityAttributes.securityEnabled) ? "on" : "off";
+                }
+                else
+                    status += "Disconected";
               return status;
             }
         }
@@ -57,7 +62,7 @@ namespace WiimoteTest
         {
             get
             {
-                if (client.Interfaces[0].CurrentConnection.isState == Wlan.WlanInterfaceState.Connected || client.Interfaces[0].CurrentConnection.isState == Wlan.WlanInterfaceState.AdHocNetworkFormed)
+                if (client.Interfaces[0].InterfaceState == Wlan.WlanInterfaceState.Connected)
                 {
                     return client.Interfaces[0].CurrentConnection.profileName;
                 }
@@ -90,7 +95,7 @@ namespace WiimoteTest
             client.Interfaces[0].Scan();
         }
 
-        
+
         public void Connect(string Name)
         {
             Wlan.Dot11Ssid ssid = (from net in networks
@@ -101,7 +106,7 @@ namespace WiimoteTest
 
         }
 
-        public void ConnectToSecure(string Name,string Password)
+        public void ConnectToSecure(string Name, string Password)
         {
             string profileName = Name; // this is also the SSID
             string mac = "";
@@ -112,7 +117,7 @@ namespace WiimoteTest
 
 
             string profileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID><nonBroadcast>false</nonBroadcast></SSIDConfig><connectionType>IBSS</connectionType><connectionMode>manual</connectionMode><MSM><security><authEncryption><authentication>{3}</authentication><encryption>{4}</encryption></authEncryption><sharedKey><keyType>{5}</keyType><protected>false</protected><keyMaterial>{2}</keyMaterial></sharedKey></security></MSM></WLANProfile>", profileName, mac, key, authtype, enctype, keytype);
-            
+
             client.Interfaces[0].SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
 
             client.Interfaces[0].Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Independent, Name);
@@ -137,15 +142,15 @@ namespace WiimoteTest
             string keytype = "passPhrase";
 
             string profileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID><nonBroadcast>false</nonBroadcast></SSIDConfig><connectionType>IBSS</connectionType><connectionMode>manual</connectionMode><MSM><security><authEncryption><authentication>{3}</authentication><encryption>{4}</encryption></authEncryption><sharedKey><keyType>{5}</keyType><protected>false</protected><keyMaterial>{2}</keyMaterial></sharedKey></security></MSM></WLANProfile>", profileName, mac, key, authtype, enctype, keytype);
-            string openProfileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID><nonBroadcast>false</nonBroadcast></SSIDConfig><connectionType>IBSS</connectionType><connectionMode>manual</connectionMode><MSM><security><authEncryption><authentication>open</authentication><encryption>none</encryption><useOneX>false</useOneX></authEncryption></security></MSM></WLANProfile>", profileName,mac);
+            string openProfileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><name>{0}</name></SSID><nonBroadcast>false</nonBroadcast></SSIDConfig><connectionType>IBSS</connectionType><connectionMode>manual</connectionMode><MSM><security><authEncryption><authentication>open</authentication><encryption>none</encryption><useOneX>false</useOneX></authEncryption></security></MSM></WLANProfile>", profileName, mac);
             client.Interfaces[0].SetProfile(Wlan.WlanProfileFlags.AllUser, openProfileXml, true);
 
             client.Interfaces[0].Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Independent, profileName);
-           
+
 
         }
 
-        public void CreateSecureAndConnect(string Name,string password)
+        public void CreateSecureAndConnect(string Name, string password)
         {
             string profileName = Name; // this is also the SSID
             string mac = "";
