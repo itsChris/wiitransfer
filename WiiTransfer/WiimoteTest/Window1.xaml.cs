@@ -466,10 +466,12 @@ namespace WiimoteTest
                 if (e.Result == true)
                 {
                     variables.CodeStatus = "Verified";
+                    variables.LastAcceptedPassword = variables.Code;
                 }
                 if (e.Result == false)
                 {
                     variables.CodeStatus = "Not Verified";
+                    variables.LastAcceptedPassword = "";
                 }
             }
 
@@ -582,8 +584,9 @@ namespace WiimoteTest
 
         private void btnConnectUsingCode_Click(object sender, RoutedEventArgs e)
         {
+            string currentlyConnectedTo = wifiManager.CurrentlyConnectedTo;
             wifiManager.Disconnect();
-            wifiManager.ConnectToSecure(wifiManager.CurrentlyConnectedTo, variables.LastAcceptedPassword);
+            wifiManager.ConnectToSecure(currentlyConnectedTo, variables.LastAcceptedPassword);
         }
 
         private void btnClearCode_Click(object sender, RoutedEventArgs e)
