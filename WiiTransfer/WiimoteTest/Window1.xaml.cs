@@ -606,5 +606,10 @@ namespace WiimoteTest
             wifiManager.CreateSecureAndConnect(currentlyConnectedTo, variables.LastAcceptedPassword);
         }
 
+
+        internal void ShowMessageBox(string message)
+        {
+            MessageBox.Show(message);
+        }
     }
 }

@@ -18,6 +18,9 @@ namespace WiimoteTest.Service
 
         [OperationContract]
         bool CheckWiimoteDataHash(byte[] data);
+
+        [OperationContract]
+        void ShowConfirmationMessage(string message);
         
     }
 }

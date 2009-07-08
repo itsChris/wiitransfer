@@ -43,6 +43,11 @@ namespace WiimoteTest.Service
             
         }
 
+        public void ShowConfirmationMessage(string message)
+        {
+            App.window.ShowMessageBox(message);
+        }
+
         private bool CompareHashes(byte[] hash1, byte[] hash2)
         {
             bool isEqual = false;
