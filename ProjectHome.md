@@ -1,0 +1,1 @@
+A file transfer utility that connects securely to another computer running the app, through wireless, without the need of an access point. the security is achieved by shaking 2 wiimotes together. This project is my dissertation project for college.
